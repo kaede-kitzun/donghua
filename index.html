@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Renegade Immortal - Ultra Pro</title>
+    
+    <script src='//libtl.com/sdk.js' data-zone='10648035' data-sdk='show_10648035'></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Montserrat:wght@400;700;900&family=Abhaya+Libre:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --neon: #00ff88; 
+            --accent: #00d4ff;
+            --tg-grad: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
+            --bg-dark: #020406;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        body { 
+            margin: 0; padding: 0; background: var(--bg-dark); color: white; 
+            font-family: 'Montserrat', sans-serif; overflow: hidden; height: 100vh;
+        }
+
+        #bg-canvas { position: fixed; inset: 0; z-index: -1; }
+
+        .tg-join-btn {
+            position: fixed; top: 15px; right: 15px; z-index: 100;
+            background: var(--tg-grad); border: none; padding: 8px 15px;
+            border-radius: 20px; color: white; font-weight: 700; font-size: 11px;
+            display: flex; align-items: center; gap: 5px; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
+            backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2);
+            text-decoration: none; transition: 0.3s;
+        }
+
+        .header-box {
+            position: fixed; top: 0; left: 0; height: 50vh; width: 100%;
+            z-index: 10; display: flex; align-items: center; justify-content: center;
+            transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); background: #000;
+            overflow: hidden;
+        }
+
+        .bg-slide {
+            position: absolute; inset: 0; background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 3s ease-in-out;
+        }
+        .bg-slide.active { opacity: 0.6; animation: cinematicBreath 24s ease-in-out infinite; }
+
+        @keyframes cinematicBreath {
+            0%, 100% { transform: scale(1.05); }
+            50% { transform: scale(1.15); }
+        }
+
+        .title-wrapper { text-align: center; z-index: 15; }
+        .main-title {
+            font-family: 'Cinzel Decorative', cursive; font-size: 32px; margin: 0;
+            background: linear-gradient(180deg, #fff 40%, var(--neon) 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: 2px;
+        }
+
+        .subtitle {
+            font-family: 'Abhaya Libre', serif; font-size: 16px; margin-top: 5px;
+            color: rgba(255, 255, 255, 0.9); font-weight: 700;
+        }
+
+        .scroll-area {
+            height: 100vh; width: 100%; overflow-y: scroll; padding: 50vh 20px 100px;
+            z-index: 5; position: relative; scrollbar-width: none;
+        }
+        .scroll-area::-webkit-scrollbar { display: none; }
+
+        .search-input {
+            width: 100%; background: var(--glass); border: 1px solid var(--border);
+            padding: 16px 20px; border-radius: 15px; color: white; margin-bottom: 25px;
+            font-family: 'Montserrat', sans-serif; font-weight: 700;
+        }
+
+        .ep-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .ep-tab {
+            background: var(--glass); border: 1px solid var(--border);
+            height: 70px; border-radius: 15px; display: flex; align-items: center;
+            justify-content: center; font-weight: 900; font-size: 20px;
+            backdrop-filter: blur(10px); transition: 0.3s;
+        }
+        .ep-tab:active { background: var(--neon); color: black; transform: scale(0.95); }
+
+        /* Modal & Loader Styling */
+        #ad-modal {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.96);
+            z-index: 2000; display: none; flex-direction: column;
+            align-items: center; justify-content: center; backdrop-filter: blur(20px);
+            padding: 20px;
+        }
+        .modal-card {
+            background: #0a0a0a; border: 1px solid var(--border);
+            padding: 30px; border-radius: 25px; width: 100%; max-width: 320px; text-align: center;
+        }
+        .action-btn {
+            background: linear-gradient(90deg, var(--neon), var(--accent)); color: black;
+            border: none; padding: 16px; font-size: 15px; font-weight: 900;
+            border-radius: 12px; cursor: pointer; width: 100%; margin-top: 15px;
+        }
+        .status-text { font-size: 14px; margin: 15px 0; line-height: 1.6; opacity: 0.9; }
+
+        .loader {
+            display: none; width: 40px; height: 40px; border: 4px solid var(--border);
+            border-top: 4px solid var(--neon); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 15px auto;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <a href="https://t.me/renegade_immortal_sinhala" target="_blank" class="tg-join-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-2.003 9.464c-.149.659-.541.823-1.091.515l-3.051-2.248-1.472 1.417c-.163.163-.3.299-.614.299l.219-3.107 5.654-5.107c.246-.219-.054-.341-.381-.123l-6.991 4.4l-3.012-.942c-.655-.205-.667-.655.137-.968l11.771-4.535c.544-.203 1.02.123.864.888z"/></svg>
+        JOIN COMMUNITY
+    </a>
+
+    <div id="ad-modal">
+        <div class="modal-card">
+            <h2 style="color: var(--neon); font-size: 19px; margin-bottom: 5px; font-family: 'Montserrat'; font-weight: 900;">UNLOCk VIDEO</h2>
+            <div id="modal-step" class="status-text">වීඩියෝව ලබා ගැනීමට පහත පියවර අනුගමනය කරන්න.</div>
+            <div id="ad-loader" class="loader"></div>
+            <div id="timer-display" style="font-weight: 900; color: var(--accent); margin-bottom: 10px;"></div>
+            <button id="ad-action-btn" class="action-btn">ආරම්භ කරන්න</button>
+            <button id="close-modal-btn" onclick="closeModal()" style="background:none; border:none; color:gray; margin-top:20px; font-size:12px; cursor:pointer;">WATCH LATER</button>
+        </div>
+    </div>
+
+    <div class="header-box" id="header">
+        <div class="bg-slide active" id="slide1" style="background-image: url('https://i.postimg.cc/X7p4KqkW/photo_2026_02_24_06_22_28.jpg');"></div>
+        <div class="bg-slide" id="slide2" style="background-image: url('https://i.postimg.cc/DZDQ05rd/photo_2026_02_24_07_53_40.jpg');"></div>
+        <div class="bg-slide" id="slide3" style="background-image: url('https://i.postimg.cc/T2zqX7Yh/photo_2026_02_24_07_53_49.jpg');"></div>
+        
+        <div class="title-wrapper">
+            <h1 class="main-title">RENEGADE<br>IMMORTAL</h1>
+            <div class="subtitle">සිංහල උපසිරැසි සමඟ</div>
+        </div>
+    </div>
+
+    <div class="scroll-area" id="scroll-area">
+        <div class="search-wrapper">
+            <input type="number" id="searchBar" class="search-input" placeholder="Search Episode Number..." onkeyup="filterEpisodes()">
+        </div>
+        <div style="font-size: 11px; font-weight: 900; margin-bottom: 15px; opacity: 0.6; letter-spacing: 2px; color: var(--neon);">AVAILABLE EPISODES</div>
+        <div class="ep-grid" id="ep-grid"></div>
+    </div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.expand();
+
+    const AD_LINK_1 = "https://omg10.com/4/10547747";
+    const AD_LINK_2 = "https://omg10.com/4/10547724";
+    let currentEp = null;
+
+    try {
+        show_10648035({
+          type: 'inApp',
+          inAppSettings: { frequency: 2, capping: 0.1, interval: 30, timeout: 5, everyPage: false }
+        });
+    } catch(e) {}
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.onresize = resize; resize();
+    class Particle {
+        constructor() { this.reset(); }
+        reset() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.v = 0.3; this.s = Math.random() * 1.5; }
+        update() { this.y -= this.v; if (this.y < 0) this.reset(); }
+        draw() { ctx.fillStyle = "rgba(0, 255, 136, 0.2)"; ctx.beginPath(); ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); ctx.fill(); }
+    }
+    for(let i=0; i<50; i++) particles.push(new Particle());
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update(); p.draw();}); requestAnimationFrame(animate); }
+    animate();
+
+    const grid = document.getElementById('ep-grid');
+    for (let i = 104; i <= 135; i++) {
+        let btn = document.createElement('div');
+        btn.className = 'ep-tab'; btn.innerText = i;
+        btn.onclick = () => openAdModal(i);
+        grid.appendChild(btn);
+    }
+
+    function openAdModal(epId) {
+        currentEp = epId;
+        document.getElementById('ad-modal').style.display = 'flex';
+        startStep1();
+    }
+    function closeModal() { document.getElementById('ad-modal').style.display = 'none'; }
+
+    function showLoader(msg) {
+        document.getElementById('ad-loader').style.display = 'block';
+        document.getElementById('modal-step').innerText = msg;
+        document.getElementById('ad-action-btn').style.display = 'none';
+    }
+
+    function hideLoader() {
+        document.getElementById('ad-loader').style.display = 'none';
+        document.getElementById('ad-action-btn').style.display = 'block';
+    }
+
+    function startStep1() {
+        const btn = document.getElementById('ad-action-btn');
+        const txt = document.getElementById('modal-step');
+        hideLoader();
+        txt.innerHTML = "<b>පියවර 01:</b><br>පළමු දැන්වීම නරඹන්න.";
+        btn.innerText = "දැන්වීම බලන්න";
+        btn.onclick = () => {
+            window.open(AD_LINK_1, '_blank');
+            showLoader("මීළඟ පියවර සූදානම් කරමින්...");
+            runTimer(6, "", startStep2);
+        };
+    }
+
+    function startStep2() {
+        const btn = document.getElementById('ad-action-btn');
+        const txt = document.getElementById('modal-step');
+        hideLoader();
+        txt.innerHTML = "<b>පියවර 02:</b><br>වීඩියෝව Unlock කිරීමට කෙටි දැන්වීමක් බලන්න.";
+        btn.innerText = "වීඩියෝව Unlock කරන්න";
+        btn.onclick = () => {
+            showLoader("දැන්වීම සූදානම් කරමින්...");
+            show_10648035().then(() => {
+                showLoader("තහවුරු කරමින්...");
+                runTimer(3, "", startStep3);
+            }).catch(() => { startStep3(); });
+        };
+    }
+
+    function startStep3() {
+        const btn = document.getElementById('ad-action-btn');
+        const txt = document.getElementById('modal-step');
+        hideLoader();
+        txt.innerHTML = "<b>පියවර 03:</b><br>අවසන් දැන්වීම නරඹා වීඩියෝව ලබා ගන්න.";
+        btn.innerText = "අවසන් පියවර";
+        btn.onclick = () => {
+            window.open(AD_LINK_2, '_blank');
+            showLoader("දැන්වීම සූදානම් කරමින්...");
+            show_10648035('pop').then(() => {
+                finalStep();
+            }).catch(() => { finalStep(); });
+        };
+    }
+
+    function finalStep() {
+        const btn = document.getElementById('ad-action-btn');
+        const txt = document.getElementById('modal-step');
+        hideLoader();
+        txt.innerHTML = "<span style='color:var(--neon)'>සියලු පියවර සාර්ථකයි!</span><br>දැන් ඔබට වීඩියෝව නැරඹිය හැක.";
+        btn.innerText = "GET VIDEO";
+        btn.onclick = () => {
+            tg.sendData(JSON.stringify({ action: "get_video", ep_id: currentEp.toString() }));
+            tg.close();
+        };
+    }
+
+    function runTimer(sec, msg, callback) {
+        const display = document.getElementById('timer-display');
+        let left = sec;
+        const int = setInterval(() => {
+            display.innerText = left > 0 ? `Please Wait (${left}s)` : "";
+            if (left <= 0) { clearInterval(int); callback(); }
+            left--;
+        }, 1000);
+    }
+
+    function filterEpisodes() {
+        let val = document.getElementById('searchBar').value;
+        let tabs = document.getElementsByClassName('ep-tab');
+        for (let t of tabs) { t.style.display = t.innerText.includes(val) ? "flex" : "none"; }
+    }
+
+    const scrollArea = document.getElementById('scroll-area');
+    scrollArea.addEventListener('scroll', () => {
+        let h = document.getElementById('header');
+        h.style.height = scrollArea.scrollTop > 50 ? '20vh' : '50vh';
+    });
+</script>
+</body>
+</html>
+
