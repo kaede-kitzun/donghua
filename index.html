@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Renegade Immortal - Ultra Pro</title>
+    <title>Renegade Immortal - Episodes</title>
     
-    <!-- SDK Scripts -->
-    <script src='//libtl.com/sdk.js' data-zone='10648035' data-sdk='show_10648035'></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Montserrat:wght@400;700;900&family=Abhaya+Libre:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -18,143 +14,78 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
-            outline: none;
         }
 
-        :root { 
-            --neon: #00ff88; 
+        :root {
+            --neon: #00ff88;
             --accent: #00d4ff;
-            --tg-grad: linear-gradient(45deg, #6a11cb 0%, #2575fc 100%);
             --bg-dark: #020406;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-light: rgba(255, 255, 255, 0.08);
             --border: rgba(255, 255, 255, 0.1);
-            --danger: #ff4757;
-            --success: #00ff88;
         }
 
-        body { 
-            margin: 0; 
-            padding: 0; 
-            background: var(--bg-dark); 
-            color: white; 
-            font-family: 'Montserrat', sans-serif; 
-            overflow: hidden; 
-            height: 100vh;
+        body {
+            background: var(--bg-dark);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        #bg-canvas { 
-            position: fixed; 
-            inset: 0; 
-            z-index: -1; 
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
-        /* Header Section */
-        .header-box {
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            height: 50vh; 
-            width: 100%;
-            z-index: 10; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            transition: 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
-            background: #000;
-            overflow: hidden;
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(106, 17, 203, 0.2) 0%, rgba(37, 117, 252, 0.2) 100%);
+            border-radius: 20px;
+            border: 1px solid var(--border);
         }
 
-        .header-box.minimized {
-            height: 30vh;
-        }
-
-        .bg-slide {
-            position: absolute; 
-            inset: 0; 
-            background-size: cover; 
-            background-position: center;
-            opacity: 0; 
-            transition: opacity 3s ease-in-out;
-        }
-        
-        .bg-slide.active { 
-            opacity: 0.6; 
-            animation: cinematicBreath 24s ease-in-out infinite; 
-        }
-
-        @keyframes cinematicBreath {
-            0%, 100% { transform: scale(1.05); }
-            50% { transform: scale(1.15); }
-        }
-
-        .title-wrapper { 
-            text-align: center; 
-            z-index: 15; 
-            padding: 0 20px;
-        }
-        
         .main-title {
-            font-family: 'Cinzel Decorative', cursive; 
-            font-size: 32px; 
-            margin: 0;
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 28px;
             background: linear-gradient(180deg, #fff 40%, var(--neon) 100%);
-            -webkit-background-clip: text; 
+            -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 2px;
         }
 
         .subtitle {
-            font-family: 'Abhaya Libre', serif; 
-            font-size: 16px; 
+            font-size: 14px;
             margin-top: 5px;
-            color: rgba(255, 255, 255, 0.9); 
-            font-weight: 700;
-        }
-
-        /* Scroll Area */
-        .scroll-area {
-            height: 100vh; 
-            width: 100%; 
-            overflow-y: auto; 
-            padding: 50vh 20px 100px;
-            z-index: 5; 
-            position: relative; 
-            scrollbar-width: none;
-        }
-        
-        .scroll-area::-webkit-scrollbar { 
-            display: none; 
+            opacity: 0.8;
+            color: var(--neon);
         }
 
         /* Search Bar */
         .search-wrapper {
             position: relative;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .search-input {
-            width: 100%; 
-            background: var(--glass); 
+            width: 100%;
+            background: var(--glass);
             border: 1px solid var(--border);
-            padding: 16px 20px 16px 50px; 
-            border-radius: 15px; 
-            color: white; 
-            font-family: 'Montserrat', sans-serif; 
-            font-weight: 700;
+            padding: 15px 20px 15px 50px;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
             font-size: 16px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .search-input:focus {
             border-color: var(--neon);
             background: var(--glass-light);
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.2);
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-            font-weight: 400;
+            outline: none;
         }
 
         .search-icon {
@@ -164,51 +95,46 @@
             transform: translateY(-50%);
             color: var(--neon);
             font-size: 18px;
-            pointer-events: none;
         }
 
-        /* Stats Bar */
+        /* Stats */
         .stats-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
-            font-size: 11px;
-            font-weight: 900;
-            opacity: 0.8;
-            letter-spacing: 2px;
+            font-size: 12px;
             color: var(--neon);
+            letter-spacing: 1px;
         }
 
         .episode-count {
             background: var(--glass);
-            padding: 5px 10px;
+            padding: 5px 12px;
             border-radius: 20px;
             border: 1px solid var(--border);
             color: white;
         }
 
         /* Episode Grid */
-        .ep-grid { 
-            display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 10px; 
+        .ep-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             margin-bottom: 30px;
         }
 
         .ep-tab {
-            background: var(--glass); 
+            background: var(--glass);
             border: 1px solid var(--border);
-            height: 70px; 
-            border-radius: 15px; 
-            display: flex; 
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
             flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
-            font-weight: 900; 
-            font-size: 20px;
-            backdrop-filter: blur(10px); 
-            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -221,18 +147,16 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.5s ease;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
         }
 
         .ep-tab:hover::before {
             left: 100%;
         }
 
-        .ep-tab:active { 
-            background: var(--neon); 
-            color: black; 
-            transform: scale(0.95); 
+        .ep-tab:active {
+            transform: scale(0.95);
         }
 
         .ep-tab.unlocked {
@@ -240,52 +164,40 @@
             box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
         }
 
-        .ep-tab.locked {
-            opacity: 0.5;
-            filter: grayscale(0.5);
-        }
-
-        .ep-tab .ep-number {
-            font-size: 20px;
+        .ep-number {
+            font-size: 24px;
             font-weight: 900;
         }
 
-        .ep-tab .ep-status {
-            font-size: 8px;
-            margin-top: 3px;
+        .ep-status {
+            font-size: 10px;
+            margin-top: 5px;
             color: var(--neon);
         }
 
-        /* Modal Styling */
+        /* Modal */
         #ad-modal {
-            position: fixed; 
-            inset: 0; 
-            background: rgba(0,0,0,0.96);
-            z-index: 2000; 
-            display: none; 
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            display: none;
             flex-direction: column;
-            align-items: center; 
-            justify-content: center; 
+            align-items: center;
+            justify-content: center;
             backdrop-filter: blur(20px);
             padding: 20px;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
         }
 
         .modal-card {
-            background: #0a0a0a; 
+            background: #0a0a0a;
             border: 1px solid var(--border);
-            padding: 30px; 
-            border-radius: 25px; 
-            width: 100%; 
-            max-width: 320px; 
+            padding: 30px;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 340px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.3s;
         }
 
         @keyframes slideUp {
@@ -297,21 +209,18 @@
             margin-bottom: 20px;
         }
 
-        .modal-header h2 { 
-            color: var(--neon); 
-            font-size: 24px; 
-            margin-bottom: 5px; 
-            font-family: 'Montserrat'; 
+        .modal-header h2 {
+            color: var(--neon);
+            font-size: 22px;
+            margin-bottom: 5px;
             font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .modal-header .ep-badge {
+        .ep-badge {
             background: var(--glass);
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 14px;
             display: inline-block;
             border: 1px solid var(--border);
         }
@@ -324,17 +233,17 @@
         }
 
         .step-dot {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             background: var(--glass);
             border: 2px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 900;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .step-dot.completed {
@@ -345,29 +254,28 @@
 
         .step-dot.active {
             border-color: var(--neon);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 15px var(--neon);
         }
 
-        .status-text { 
-            font-size: 14px; 
-            margin: 15px 0; 
-            line-height: 1.6; 
-            opacity: 0.9; 
+        .status-text {
+            font-size: 15px;
+            margin: 20px 0;
+            line-height: 1.6;
             min-height: 60px;
         }
 
         .action-btn {
-            background: linear-gradient(90deg, var(--neon), var(--accent)); 
+            background: linear-gradient(90deg, var(--neon), var(--accent));
             color: black;
-            border: none; 
-            padding: 16px; 
-            font-size: 16px; 
+            border: none;
+            padding: 16px;
+            font-size: 16px;
             font-weight: 900;
-            border-radius: 12px; 
-            cursor: pointer; 
-            width: 100%; 
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
             margin-top: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
@@ -382,442 +290,241 @@
             cursor: not-allowed;
         }
 
-        .action-btn.secondary {
-            background: transparent;
-            border: 2px solid var(--border);
-            color: white;
-        }
-
         .close-btn {
-            background:none; 
-            border:none; 
-            color:gray; 
-            margin-top:20px; 
-            font-size:12px; 
-            cursor:pointer;
-            transition: color 0.3s ease;
-        }
-
-        .close-btn:hover {
-            color: white;
+            background: none;
+            border: none;
+            color: gray;
+            margin-top: 20px;
+            font-size: 12px;
+            cursor: pointer;
         }
 
         .loader {
-            display: none; 
-            width: 50px; 
-            height: 50px; 
+            display: none;
+            width: 50px;
+            height: 50px;
             border: 4px solid var(--border);
-            border-top: 4px solid var(--neon); 
+            border-top: 4px solid var(--neon);
             border-radius: 50%;
-            animation: spin 1s linear infinite; 
+            animation: spin 1s linear infinite;
             margin: 20px auto;
         }
 
-        @keyframes spin { 
-            0% { transform: rotate(0deg); } 
-            100% { transform: rotate(360deg); } 
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .timer-display { 
-            font-size: 24px; 
-            font-weight: 900; 
-            color: var(--accent); 
+        .timer-display {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent);
             margin: 10px 0;
-            font-family: 'Courier New', monospace;
+            font-family: monospace;
         }
 
         .success-message {
             color: var(--neon);
-            font-size: 16px;
+            font-size: 18px;
             margin: 15px 0;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* Floating Action Button */
-        .fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, var(--neon), var(--accent));
             display: none;
-            align-items: center;
-            justify-content: center;
-            color: black;
-            font-size: 24px;
-            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s ease;
         }
 
-        .fab:hover {
-            transform: scale(1.1);
-        }
-
-        /* Telegram Join Button */
-        .tg-join-btn {
-            position: fixed; 
-            top: 15px; 
-            right: 15px; 
-            z-index: 100;
-            background: var(--tg-grad); 
-            border: none; 
-            padding: 8px 15px;
-            border-radius: 20px; 
-            color: white; 
-            font-weight: 700; 
-            font-size: 11px;
-            display: flex; 
-            align-items: center; 
-            gap: 5px; 
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(37, 117, 252, 0.4);
-            backdrop-filter: blur(5px); 
-            border: 1px solid rgba(255,255,255,0.2);
-            text-decoration: none; 
-            transition: 0.3s;
-        }
-
-        .tg-join-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(37, 117, 252, 0.6);
-        }
-
-        /* No Results Message */
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
             padding: 40px;
             color: gray;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        /* Responsive Design */
         @media (min-width: 768px) {
-            .ep-grid { 
-                grid-template-columns: repeat(6, 1fr); 
-            }
-            
-            .main-title {
-                font-size: 48px;
-            }
-            
-            .subtitle {
-                font-size: 18px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .ep-grid { 
-                grid-template-columns: repeat(3, 1fr); 
-            }
-            
-            .ep-tab {
-                height: 60px;
-                font-size: 16px;
+            .ep-grid {
+                grid-template-columns: repeat(6, 1fr);
             }
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="main-title">RENEGADE IMMORTAL</h1>
+            <div class="subtitle">සිංහල උපසිරැසි සමඟ</div>
+        </div>
 
-    <canvas id="bg-canvas"></canvas>
+        <!-- Search -->
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="Search episode number..." onkeyup="filterEpisodes()">
+        </div>
 
-    <!-- Telegram Join Button -->
-    <a href="https://t.me/renegade_immortal_sinhala" target="_blank" class="tg-join-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.891 8.146l-2.003 9.464c-.149.659-.541.823-1.091.515l-3.051-2.248-1.472 1.417c-.163.163-.3.299-.614.299l.219-3.107 5.654-5.107c.246-.219-.054-.341-.381-.123l-6.991 4.4-3.012-.942c-.655-.205-.667-.655.137-.968l11.771-4.535c.544-.203 1.02.123.864.888z"/>
-        </svg>
-        JOIN COMMUNITY
-    </a>
+        <!-- Stats -->
+        <div class="stats-bar">
+            <span>📋 AVAILABLE EPISODES</span>
+            <span class="episode-count" id="epCount">104-135</span>
+        </div>
 
-    <!-- Floating Action Button (for scroll to top) -->
-    <div class="fab" id="fab" onclick="scrollToTop()">↑</div>
+        <!-- Episode Grid -->
+        <div class="ep-grid" id="epGrid"></div>
+    </div>
 
-    <!-- Main Modal -->
-    <div id="ad-modal">
+    <!-- Unlock Modal -->
+    <div id="adModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h2>UNLOCK VIDEO</h2>
-                <div class="ep-badge" id="modal-ep-badge">Episode 00</div>
+                <h2>🔓 UNLOCK VIDEO</h2>
+                <div class="ep-badge" id="modalEpisode">Episode 00</div>
             </div>
             
             <!-- Step Indicator -->
             <div class="step-indicator">
-                <div class="step-dot" id="step1-dot">1</div>
-                <div class="step-dot" id="step2-dot">2</div>
-                <div class="step-dot" id="step3-dot">3</div>
+                <div class="step-dot" id="step1">1</div>
+                <div class="step-dot" id="step2">2</div>
+                <div class="step-dot" id="step3">3</div>
             </div>
             
-            <!-- Step Text -->
-            <div id="modal-step" class="status-text">වීඩියෝව ලබා ගැනීමට පහත පියවර අනුගමනය කරන්න.</div>
+            <!-- Status -->
+            <div id="modalStatus" class="status-text">වීඩියෝව ලබා ගැනීමට පියවර අනුගමනය කරන්න.</div>
             
             <!-- Loader -->
-            <div id="ad-loader" class="loader"></div>
+            <div id="modalLoader" class="loader"></div>
             
-            <!-- Timer Display -->
-            <div id="timer-display" class="timer-display"></div>
+            <!-- Timer -->
+            <div id="timerDisplay" class="timer-display"></div>
             
-            <!-- Success Message -->
-            <div id="success-message" class="success-message" style="display: none;">✅ සාර්ථකයි!</div>
+            <!-- Success -->
+            <div id="successMessage" class="success-message">✅ සාර්ථකයි!</div>
             
-            <!-- Action Buttons -->
-            <button id="ad-action-btn" class="action-btn">ආරම්භ කරන්න</button>
-            <button id="close-modal-btn" class="close-btn" onclick="closeModal()">WATCH LATER</button>
+            <!-- Action Button -->
+            <button id="actionBtn" class="action-btn">ආරම්භ කරන්න</button>
+            <button id="closeModalBtn" class="close-btn" onclick="closeModal()">පසුව බලන්න</button>
         </div>
-    </div>
-
-    <!-- Header Section -->
-    <div class="header-box" id="header">
-        <div class="bg-slide active" id="slide1" style="background-image: url('https://i.postimg.cc/X7p4KqkW/photo_2026_02_24_06_22_28.jpg');"></div>
-        <div class="bg-slide" id="slide2" style="background-image: url('https://i.postimg.cc/DZDQ05rd/photo_2026_02_24_07_53_40.jpg');"></div>
-        <div class="bg-slide" id="slide3" style="background-image: url('https://i.postimg.cc/T2zqX7Yh/photo_2026_02_24_07_53_49.jpg');"></div>
-        
-        <div class="title-wrapper">
-            <h1 class="main-title">RENEGADE<br>IMMORTAL</h1>
-            <div class="subtitle">සිංහල උපසිරැසි සමඟ</div>
-        </div>
-    </div>
-
-    <!-- Scrollable Content -->
-    <div class="scroll-area" id="scroll-area">
-        <div class="search-wrapper">
-            <span class="search-icon">🔍</span>
-            <input type="number" id="searchBar" class="search-input" placeholder="Search Episode Number..." onkeyup="filterEpisodes()" min="1">
-        </div>
-        
-        <div class="stats-bar">
-            <span>AVAILABLE EPISODES</span>
-            <span class="episode-count" id="ep-count">104-135</span>
-        </div>
-        
-        <div class="ep-grid" id="ep-grid"></div>
     </div>
 
     <script>
-        // Telegram Web App Initialization
+        // ==================== TELEGRAM INIT ====================
         const tg = window.Telegram.WebApp;
         tg.expand();
         tg.ready();
-        
-        // Configuration
-        const AD_LINK_1 = "https://omg10.com/4/10547747";
-        const AD_LINK_2 = "https://omg10.com/4/10547724";
-        let currentEp = null;
+
+        // ==================== CONFIG ====================
+        const AD_LINK_1 = "https://omg10.com/4/10547747";  // First ad link
+        const AD_LINK_2 = "https://omg10.com/4/10547724";  // Second ad link
+        const START_EP = 104;
+        const END_EP = 135;
+
+        let currentEpisode = null;
         let currentStep = 1;
         let unlockedEpisodes = new Set();
 
-        // Load unlocked episodes from localStorage
+        // ==================== LOAD UNLOCKED EPISODES ====================
         try {
-            const saved = localStorage.getItem('unlockedEpisodes');
+            const saved = localStorage.getItem('renegade_unlocked');
             if (saved) {
                 unlockedEpisodes = new Set(JSON.parse(saved));
+                console.log('Loaded unlocked:', unlockedEpisodes);
             }
-        } catch(e) {}
+        } catch(e) {
+            console.error('Error loading saved episodes:', e);
+        }
 
-        // Save unlocked episodes
+        // ==================== SAVE UNLOCKED EPISODES ====================
         function saveUnlockedEpisodes() {
-            localStorage.setItem('unlockedEpisodes', JSON.stringify([...unlockedEpisodes]));
+            try {
+                localStorage.setItem('renegade_unlocked', JSON.stringify([...unlockedEpisodes]));
+            } catch(e) {
+                console.error('Error saving:', e);
+            }
         }
 
-        // Show Ad SDK
-        try {
-            show_10648035({
-                type: 'inApp',
-                inAppSettings: { 
-                    frequency: 2, 
-                    capping: 0.1, 
-                    interval: 30, 
-                    timeout: 5, 
-                    everyPage: false 
+        // ==================== GENERATE EPISODES ====================
+        function generateEpisodes() {
+            const grid = document.getElementById('epGrid');
+            grid.innerHTML = '';
+
+            for (let i = START_EP; i <= END_EP; i++) {
+                const epNumber = i;
+                const epId = `EP${String(i).padStart(2, '0')}`;
+                
+                const card = document.createElement('div');
+                card.className = 'ep-tab';
+                if (unlockedEpisodes.has(epNumber.toString())) {
+                    card.classList.add('unlocked');
                 }
-            });
-        } catch(e) {}
-
-        // Canvas Background Animation
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() { 
-            canvas.width = window.innerWidth; 
-            canvas.height = window.innerHeight; 
-        }
-        
-        window.onresize = resize; 
-        resize();
-
-        class Particle {
-            constructor() { 
-                this.reset(); 
+                card.id = `ep-${epNumber}`;
+                card.dataset.epNumber = epNumber;
+                card.dataset.epId = epId;
+                
+                card.innerHTML = `
+                    <span class="ep-number">${epNumber}</span>
+                    <span class="ep-status">${unlockedEpisodes.has(epNumber.toString()) ? 'UNLOCKED' : 'LOCKED'}</span>
+                `;
+                
+                card.onclick = () => openModal(epNumber);
+                grid.appendChild(card);
             }
             
-            reset() { 
-                this.x = Math.random() * canvas.width; 
-                this.y = Math.random() * canvas.height; 
-                this.v = 0.2 + Math.random() * 0.3; 
-                this.s = Math.random() * 2 + 1; 
-            }
-            
-            update() { 
-                this.y -= this.v; 
-                if (this.y < 0) this.reset(); 
-            }
-            
-            draw() { 
-                ctx.fillStyle = "rgba(0, 255, 136, 0.15)"; 
-                ctx.beginPath(); 
-                ctx.arc(this.x, this.y, this.s, 0, Math.PI*2); 
-                ctx.fill(); 
-            }
+            document.getElementById('epCount').textContent = `${START_EP}-${END_EP}`;
         }
 
-        for(let i=0; i<60; i++) particles.push(new Particle());
-
-        function animate() { 
-            ctx.clearRect(0,0,canvas.width,canvas.height); 
-            particles.forEach(p=>{p.update(); p.draw();}); 
-            requestAnimationFrame(animate); 
-        }
-        
-        animate();
-
-        // Generate Episodes (104-135)
-        const grid = document.getElementById('ep-grid');
-        const startEp = 104;
-        const endEp = 135;
-
-        for (let i = startEp; i <= endEp; i++) {
-            let btn = document.createElement('div');
-            btn.className = 'ep-tab';
-            btn.id = `ep-${i}`;
-            
-            // Check if episode is unlocked
-            if (unlockedEpisodes.has(i.toString())) {
-                btn.classList.add('unlocked');
-            }
-            
-            btn.innerHTML = `
-                <span class="ep-number">${i}</span>
-                <span class="ep-status">${unlockedEpisodes.has(i.toString()) ? 'UNLOCKED' : 'LOCKED'}</span>
-            `;
-            
-            btn.onclick = () => openAdModal(i);
-            grid.appendChild(btn);
-        }
-
-        // Update episode count
-        document.getElementById('ep-count').innerText = `${startEp}-${endEp}`;
-
-        // Filter Episodes
+        // ==================== FILTER EPISODES ====================
         function filterEpisodes() {
-            let val = document.getElementById('searchBar').value;
-            let tabs = document.getElementsByClassName('ep-tab');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.ep-tab');
             let visibleCount = 0;
-            
-            for (let t of tabs) {
-                const epNum = t.querySelector('.ep-number').innerText;
-                if (epNum.includes(val)) {
-                    t.style.display = "flex";
+
+            cards.forEach(card => {
+                const epNumber = card.dataset.epNumber;
+                if (epNumber.includes(searchTerm)) {
+                    card.style.display = 'flex';
                     visibleCount++;
                 } else {
-                    t.style.display = "none";
+                    card.style.display = 'none';
                 }
-            }
-            
-            // Show no results message if needed
-            const noResults = document.querySelector('.no-results');
+            });
+
+            // Show no results message
+            const existingMsg = document.querySelector('.no-results');
             if (visibleCount === 0) {
-                if (!noResults) {
+                if (!existingMsg) {
                     const msg = document.createElement('div');
                     msg.className = 'no-results';
-                    msg.innerText = '❌ කිසිදු කථාංගයක් හමු නොවුණි';
-                    document.getElementById('ep-grid').appendChild(msg);
+                    msg.textContent = '❌ කිසිදු කථාංගයක් හමු නොවුණි';
+                    document.getElementById('epGrid').appendChild(msg);
                 }
             } else {
-                if (noResults) noResults.remove();
+                if (existingMsg) existingMsg.remove();
             }
         }
 
-        // Scroll to top function
-        function scrollToTop() {
-            document.getElementById('scroll-area').scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
-        }
-
-        // Show/hide FAB based on scroll
-        const scrollArea = document.getElementById('scroll-area');
-        const fab = document.getElementById('fab');
-        
-        scrollArea.addEventListener('scroll', () => {
-            // Header minimize effect
-            const header = document.getElementById('header');
-            if (scrollArea.scrollTop > 50) {
-                header.classList.add('minimized');
-                fab.style.display = 'flex';
-            } else {
-                header.classList.remove('minimized');
-                fab.style.display = 'none';
-            }
-            
-            // Background slides change
-            if (scrollArea.scrollTop > 200) {
-                document.getElementById('slide1').classList.remove('active');
-                document.getElementById('slide2').classList.add('active');
-            }
-            if (scrollArea.scrollTop > 400) {
-                document.getElementById('slide2').classList.remove('active');
-                document.getElementById('slide3').classList.add('active');
-            }
-            if (scrollArea.scrollTop < 200) {
-                document.getElementById('slide1').classList.add('active');
-                document.getElementById('slide2').classList.remove('active');
-                document.getElementById('slide3').classList.remove('active');
-            }
-        });
-
-        // Modal Functions
-        function openAdModal(epId) {
-            currentEp = epId;
-            document.getElementById('modal-ep-badge').innerText = `Episode ${epId}`;
-            document.getElementById('ad-modal').style.display = 'flex';
+        // ==================== MODAL FUNCTIONS ====================
+        function openModal(epNumber) {
+            currentEpisode = epNumber;
+            document.getElementById('modalEpisode').textContent = `Episode ${epNumber}`;
+            document.getElementById('adModal').style.display = 'flex';
             resetModal();
             startStep1();
         }
 
-        function closeModal() { 
-            document.getElementById('ad-modal').style.display = 'none'; 
+        function closeModal() {
+            document.getElementById('adModal').style.display = 'none';
             resetModal();
         }
 
         function resetModal() {
             currentStep = 1;
-            document.getElementById('step1-dot').className = 'step-dot active';
-            document.getElementById('step2-dot').className = 'step-dot';
-            document.getElementById('step3-dot').className = 'step-dot';
-            document.getElementById('success-message').style.display = 'none';
-            document.getElementById('timer-display').innerText = '';
+            document.getElementById('step1').className = 'step-dot active';
+            document.getElementById('step2').className = 'step-dot';
+            document.getElementById('step3').className = 'step-dot';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('timerDisplay').textContent = '';
             hideLoader();
         }
 
-        function updateStepDots(step) {
-            const dots = [
-                document.getElementById('step1-dot'),
-                document.getElementById('step2-dot'),
-                document.getElementById('step3-dot')
-            ];
-            
-            dots.forEach((dot, index) => {
+        function updateSteps(step) {
+            const steps = [1, 2, 3].map(i => document.getElementById(`step${i}`));
+            steps.forEach((dot, index) => {
                 dot.className = 'step-dot';
                 if (index + 1 < step) {
                     dot.classList.add('completed');
@@ -827,158 +534,132 @@
             });
         }
 
-        function showLoader(msg) {
-            document.getElementById('ad-loader').style.display = 'block';
-            document.getElementById('modal-step').innerText = msg;
-            document.getElementById('ad-action-btn').style.display = 'none';
-            document.getElementById('success-message').style.display = 'none';
+        function showLoader(text) {
+            document.getElementById('modalLoader').style.display = 'block';
+            document.getElementById('modalStatus').textContent = text;
+            document.getElementById('actionBtn').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'none';
         }
 
         function hideLoader() {
-            document.getElementById('ad-loader').style.display = 'none';
-            document.getElementById('ad-action-btn').style.display = 'block';
-        }
-
-        function startStep1() {
-            currentStep = 2;
-            updateStepDots(2);
-            
-            const btn = document.getElementById('ad-action-btn');
-            const txt = document.getElementById('modal-step');
-            
-            hideLoader();
-            txt.innerHTML = "<b>📢 පියවර 01/03:</b><br>පළමු දැන්වීම නරඹන්න.";
-            btn.innerText = "දැන්වීම බලන්න";
-            btn.onclick = () => {
-                window.open(AD_LINK_1, '_blank');
-                showLoader("⏳ මීළඟ පියවර සූදානම් කරමින්...");
-                runTimer(5, startStep2);
-            };
-        }
-
-        function startStep2() {
-            currentStep = 3;
-            updateStepDots(3);
-            
-            const btn = document.getElementById('ad-action-btn');
-            const txt = document.getElementById('modal-step');
-            
-            hideLoader();
-            txt.innerHTML = "<b>🎬 පියවර 02/03:</b><br>වීඩියෝව Unlock කිරීමට කෙටි දැන්වීමක් බලන්න.";
-            btn.innerText = "වීඩියෝව Unlock කරන්න";
-            btn.onclick = () => {
-                showLoader("⏳ දැන්වීම සූදානම් කරමින්...");
-                
-                // Show Ad SDK
-                try {
-                    show_10648035().then(() => {
-                        showLoader("⏳ තහවුරු කරමින්...");
-                        runTimer(2, startStep3);
-                    }).catch(() => { 
-                        startStep3(); 
-                    });
-                } catch(e) {
-                    startStep3();
-                }
-            };
-        }
-
-        function startStep3() {
-            const btn = document.getElementById('ad-action-btn');
-            const txt = document.getElementById('modal-step');
-            
-            hideLoader();
-            txt.innerHTML = "<b>✅ පියවර 03/03:</b><br>අවසන් දැන්වීම නරඹා වීඩියෝව ලබා ගන්න.";
-            btn.innerText = "අවසන් පියවර";
-            btn.onclick = () => {
-                window.open(AD_LINK_2, '_blank');
-                showLoader("⏳ දැන්වීම සූදානම් කරමින්...");
-                
-                // Show final ad
-                try {
-                    show_10648035('pop').then(() => {
-                        finalStep();
-                    }).catch(() => { 
-                        finalStep(); 
-                    });
-                } catch(e) {
-                    finalStep();
-                }
-            };
-        }
-
-        function finalStep() {
-            const btn = document.getElementById('ad-action-btn');
-            const txt = document.getElementById('modal-step');
-            const successMsg = document.getElementById('success-message');
-            
-            hideLoader();
-            
-            // Mark episode as unlocked
-            unlockedEpisodes.add(currentEp.toString());
-            saveUnlockedEpisodes();
-            
-            // Update episode button
-            const epBtn = document.getElementById(`ep-${currentEp}`);
-            if (epBtn) {
-                epBtn.classList.add('unlocked');
-                epBtn.classList.remove('locked');
-                epBtn.querySelector('.ep-status').innerText = 'UNLOCKED';
-            }
-            
-            txt.innerHTML = "<span style='color:var(--neon)'>✨ සියලු පියවර සාර්ථකයි!</span><br>දැන් ඔබට වීඩියෝව නැරඹිය හැක.";
-            successMsg.style.display = 'block';
-            btn.innerText = "GET VIDEO NOW";
-            btn.onclick = () => {
-                // Send data to Telegram bot
-                tg.sendData(JSON.stringify({ 
-                    action: "get_video", 
-                    ep_id: currentEp.toString() 
-                }));
-                
-                // Show loading state
-                btn.innerText = "⏳ යවමින්...";
-                btn.disabled = true;
-                
-                // Close WebApp after short delay
-                setTimeout(() => {
-                    tg.close();
-                }, 1000);
-            };
+            document.getElementById('modalLoader').style.display = 'none';
+            document.getElementById('actionBtn').style.display = 'block';
         }
 
         function runTimer(seconds, callback) {
-            const display = document.getElementById('timer-display');
+            const timerDisplay = document.getElementById('timerDisplay');
             let remaining = seconds;
             
             const interval = setInterval(() => {
-                display.innerText = `⏳ ${remaining}s`;
-                
+                timerDisplay.textContent = `⏳ ${remaining}s`;
                 if (remaining <= 0) {
                     clearInterval(interval);
-                    display.innerText = '';
+                    timerDisplay.textContent = '';
                     callback();
                 }
                 remaining--;
             }, 1000);
         }
 
+        // ==================== UNLOCK STEPS ====================
+        function startStep1() {
+            currentStep = 2;
+            updateSteps(2);
+            
+            const btn = document.getElementById('actionBtn');
+            const status = document.getElementById('modalStatus');
+            
+            hideLoader();
+            status.innerHTML = '<b>📢 පියවර 1/3:</b><br>පළමු දැන්වීම නරඹන්න.';
+            btn.textContent = 'දැන්වීම බලන්න →';
+            btn.onclick = () => {
+                window.open(AD_LINK_1, '_blank');
+                showLoader('⏳ මීළඟ පියවර සූදානම් වේ...');
+                runTimer(5, startStep2);
+            };
+        }
+
+        function startStep2() {
+            currentStep = 3;
+            updateSteps(3);
+            
+            const btn = document.getElementById('actionBtn');
+            const status = document.getElementById('modalStatus');
+            
+            hideLoader();
+            status.innerHTML = '<b>🎬 පියවර 2/3:</b><br>දෙවන දැන්වීම නරඹන්න.';
+            btn.textContent = 'දැන්වීම බලන්න →';
+            btn.onclick = () => {
+                window.open(AD_LINK_2, '_blank');
+                showLoader('⏳ සත්‍යාපනය වේ...');
+                runTimer(3, startStep3);
+            };
+        }
+
+        function startStep3() {
+            const btn = document.getElementById('actionBtn');
+            const status = document.getElementById('modalStatus');
+            
+            hideLoader();
+            status.innerHTML = '<b>✅ පියවර 3/3:</b><br>වීඩියෝව ලබා ගැනීමට පහත බොත්තම ඔබන්න.';
+            btn.textContent = '🎬 වීඩියෝව ලබා ගන්න';
+            btn.onclick = finalStep;
+        }
+
+        function finalStep() {
+            const btn = document.getElementById('actionBtn');
+            const status = document.getElementById('modalStatus');
+            const successMsg = document.getElementById('successMessage');
+            
+            // Mark as unlocked
+            unlockedEpisodes.add(currentEpisode.toString());
+            saveUnlockedEpisodes();
+            
+            // Update UI
+            const epCard = document.getElementById(`ep-${currentEpisode}`);
+            if (epCard) {
+                epCard.classList.add('unlocked');
+                epCard.querySelector('.ep-status').textContent = 'UNLOCKED';
+            }
+            
+            // Format episode ID for bot
+            const epIdToSend = `EP${String(currentEpisode).padStart(2, '0')}`;
+            
+            status.innerHTML = '<span style="color:var(--neon)">✨ සාර්ථකයි!</span><br>දැන් වීඩියෝව නරඹන්න.';
+            successMsg.style.display = 'block';
+            btn.textContent = '📺 වීඩියෝව බලන්න';
+            btn.onclick = () => {
+                console.log('Sending to bot:', { action: 'get_video', ep_id: epIdToSend });
+                
+                // Send to Telegram bot
+                tg.sendData(JSON.stringify({
+                    action: 'get_video',
+                    ep_id: epIdToSend
+                }));
+                
+                btn.textContent = '⏳ යවමින්...';
+                btn.disabled = true;
+                
+                setTimeout(() => {
+                    tg.close();
+                }, 1000);
+            };
+        }
+
+        // ==================== INITIALIZE ====================
+        window.addEventListener('load', () => {
+            generateEpisodes();
+            console.log('Mini App loaded successfully');
+        });
+
         // Handle back button
         tg.BackButton.onClick(() => {
-            if (document.getElementById('ad-modal').style.display === 'flex') {
+            if (document.getElementById('adModal').style.display === 'flex') {
                 closeModal();
             } else {
                 tg.close();
             }
         });
-
-        // Main button handler
-        tg.MainButton.onClick(() => {
-            tg.close();
-        });
-
-        // Initial load
-        console.log('Renegade Immortal WebApp loaded');
     </script>
 </body>
 </html>
