@@ -1,664 +1,457 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Renegade Immortal - Episodes</title>
-    
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎉 Anime Unlock Bot 🌟 - Telegram Mini App</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css" rel="stylesheet" />
     <style>
-        * {
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
             margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
         }
-
-        :root {
-            --neon: #00ff88;
-            --accent: #00d4ff;
-            --bg-dark: #020406;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-light: rgba(255, 255, 255, 0.08);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
+        .tab-content:not(.active) { display: none; }
+        ::-webkit-scrollbar { display: none; }
         body {
-            background: var(--bg-dark);
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            min-height: 100vh;
-            padding: 20px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            padding-top: var(--tg-safe-area-inset-top);
         }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: linear-gradient(135deg, rgba(106, 17, 203, 0.2) 0%, rgba(37, 117, 252, 0.2) 100%);
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-
-        .main-title {
-            font-family: 'Cinzel Decorative', cursive;
-            font-size: 28px;
-            background: linear-gradient(180deg, #fff 40%, var(--neon) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 2px;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            margin-top: 5px;
-            opacity: 0.8;
-            color: var(--neon);
-        }
-
-        /* Search Bar */
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 20px;
-        }
-
-        .search-input {
-            width: 100%;
-            background: var(--glass);
-            border: 1px solid var(--border);
-            padding: 15px 20px 15px 50px;
-            border-radius: 15px;
-            color: white;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-
-        .search-input:focus {
-            border-color: var(--neon);
-            background: var(--glass-light);
-            outline: none;
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--neon);
-            font-size: 18px;
-        }
-
-        /* Stats */
-        .stats-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 12px;
-            color: var(--neon);
-            letter-spacing: 1px;
-        }
-
-        .episode-count {
-            background: var(--glass);
-            padding: 5px 12px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-            color: white;
-        }
-
-        /* Episode Grid */
-        .ep-grid {
+        .episode-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 8px;
         }
-
-        .ep-tab {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            height: 80px;
-            border-radius: 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .ep-tab::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .ep-tab:hover::before {
-            left: 100%;
-        }
-
-        .ep-tab:active {
-            transform: scale(0.95);
-        }
-
-        .ep-tab.unlocked {
-            border-color: var(--neon);
-            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
-        }
-
-        .ep-number {
-            font-size: 24px;
-            font-weight: 900;
-        }
-
-        .ep-status {
-            font-size: 10px;
-            margin-top: 5px;
-            color: var(--neon);
-        }
-
-        /* Modal */
-        #ad-modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.95);
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(20px);
-            padding: 20px;
-        }
-
-        .modal-card {
-            background: #0a0a0a;
-            border: 1px solid var(--border);
-            padding: 30px;
-            border-radius: 25px;
-            width: 100%;
-            max-width: 340px;
-            text-align: center;
-            animation: slideUp 0.3s;
-        }
-
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-header {
-            margin-bottom: 20px;
-        }
-
-        .modal-header h2 {
-            color: var(--neon);
-            font-size: 22px;
-            margin-bottom: 5px;
-            font-weight: 900;
-        }
-
-        .ep-badge {
-            background: var(--glass);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            display: inline-block;
-            border: 1px solid var(--border);
-        }
-
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            padding: 0 10px;
-        }
-
-        .step-dot {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            background: var(--glass);
-            border: 2px solid var(--border);
+        .episode-box {
+            aspect-ratio: 1/1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-            transition: all 0.3s;
-        }
-
-        .step-dot.completed {
-            background: var(--neon);
-            border-color: var(--neon);
-            color: black;
-        }
-
-        .step-dot.active {
-            border-color: var(--neon);
-            box-shadow: 0 0 15px var(--neon);
-        }
-
-        .status-text {
-            font-size: 15px;
-            margin: 20px 0;
-            line-height: 1.6;
-            min-height: 60px;
-        }
-
-        .action-btn {
-            background: linear-gradient(90deg, var(--neon), var(--accent));
-            color: black;
-            border: none;
-            padding: 16px;
-            font-size: 16px;
-            font-weight: 900;
             border-radius: 12px;
+            font-weight: 600;
             cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            transition: all 0.2s;
         }
-
-        .action-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+        .episode-locked {
+            background-color: #f1f5f9;
+            color: #94a3b8;
         }
-
-        .action-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .episode-unlocked {
+            background-color: #0088cc;
+            color: white;
         }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: gray;
-            margin-top: 20px;
-            font-size: 12px;
-            cursor: pointer;
-        }
-
-        .loader {
-            display: none;
-            width: 50px;
-            height: 50px;
-            border: 4px solid var(--border);
-            border-top: 4px solid var(--neon);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .timer-display {
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--accent);
-            margin: 10px 0;
-            font-family: monospace;
-        }
-
-        .success-message {
-            color: var(--neon);
-            font-size: 18px;
-            margin: 15px 0;
-            display: none;
-        }
-
-        .no-results {
-            grid-column: 1 / -1;
-            text-align: center;
-            padding: 40px;
-            color: gray;
-            font-size: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .ep-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
+        .episode-selected {
+            border: 3px solid #fbbf24;
+            transform: scale(1.05);
         }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <meta name="csrf-token" content="anime_secret_token">
 </head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <h1 class="main-title">RENEGADE IMMORTAL</h1>
-            <div class="subtitle">සිංහල උපසිරැසි සමඟ</div>
-        </div>
+<body class="bg-gray-50 font-['Inter'] text-gray-900">
 
-        <!-- Search -->
-        <div class="search-wrapper">
-            <span class="search-icon">🔍</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="Search episode number..." onkeyup="filterEpisodes()">
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 bg-white z-50 border-b border-gray-100">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
+                        <img id="avatar" src="https://via.placeholder.com/100" class="w-full h-full object-cover" alt="Profile" />
+                    </div>
+                    <div>
+                        <h2 class="font-semibold" id="name">Anime Fan</h2>
+                        <p class="text-xs text-gray-500" id="username">@username</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-gray-500">Ads Watched</p>
+                    <p class="text-lg font-bold text-primary">
+                        <span id="total_ads">0</span>
+                    </p>
+                </div>
+            </div>
         </div>
+    </header>
 
-        <!-- Stats -->
-        <div class="stats-bar">
-            <span>📋 AVAILABLE EPISODES</span>
-            <span class="episode-count" id="epCount">104-135</span>
+    <!-- Main Content -->
+    <main class="pb-20 pt-20">
+
+        <!-- HOME TAB -->
+        <section id="home" class="tab-content active px-4 py-6 space-y-6">
+            <!-- Welcome -->
+            <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-6">
+                <h1 class="text-2xl font-bold mb-2">Welcome Back! 👋</h1>
+                <p class="text-gray-600">Watch ads to unlock anime episodes</p>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="w-10 h-10 flex items-center justify-center bg-blue-50 rounded-lg mb-3">
+                        <i class="ri-film-line text-primary text-xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">Episodes Unlocked</p>
+                    <p class="text-xl font-bold text-primary" id="unlocked_count">0</p>
+                </div>
+                <div class="bg-white rounded-xl p-4 shadow-sm">
+                    <div class="w-10 h-10 flex items-center justify-center bg-green-50 rounded-lg mb-3">
+                        <i class="ri-team-line text-green-500 text-xl"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">Referrals</p>
+                    <p class="text-xl font-bold text-green-500" id="total_refer">0</p>
+                </div>
+            </div>
+
+            <!-- Ads Progress -->
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="text-lg font-semibold mb-1">Your Progress</h2>
+                        <p class="text-sm text-gray-500">Watch 5 ads to unlock 1 episode</p>
+                    </div>
+                    <div class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-full">
+                        <i class="ri-video-line text-primary text-xl"></i>
+                    </div>
+                </div>
+                <div class="relative w-full h-3 bg-gray-100 rounded-full overflow-hidden mb-2">
+                    <div id="ads-progress-bar" class="absolute top-0 left-0 h-full bg-primary" style="width: 0%;"></div>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span id="ads-status" class="text-gray-600">0/5 ads watched</span>
+                    <span id="next-unlock" class="text-gray-500">5 ads needed for next unlock</span>
+                </div>
+            </div>
+
+            <!-- Episode Selector -->
+            <div class="bg-white rounded-xl p-6 shadow-sm">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold">Episodes</h2>
+                    <span class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">1-50</span>
+                </div>
+                <div id="episode-grid" class="episode-grid">
+                    <!-- JS will generate episodes -->
+                </div>
+                <p class="text-xs text-gray-500 mt-4 text-center">
+                    <i class="ri-information-line"></i> Click on a locked episode to unlock it (requires 5 ads)
+                </p>
+            </div>
+
+            <!-- Referral Section -->
+            <div class="bg-white rounded-2xl p-4 shadow-md border border-gray-100">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                        <i class="ri-user-shared-line text-primary"></i>
+                        Refer & Earn
+                    </h3>
+                    <span class="text-xs bg-primary/10 text-primary font-semibold px-2 py-1 rounded-full">
+                        10 referrals = Ads free episodes
+                    </span>
+                </div>
+                <div class="space-y-2 mb-4">
+                    <div class="flex items-center gap-2 bg-gray-50 p-2 rounded-lg">
+                        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-primary/10 text-primary">
+                            <i class="ri-gift-line"></i>
+                        </div>
+                        <p class="text-xs text-gray-700">
+                            Get <span class="font-semibold">10 referrals</span> to watch episodes without ads
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="refer-link" value="https://t.me/anime_bot?start=" readonly class="flex-1 px-3 py-2 rounded-lg text-xs border border-gray-200 bg-gray-50" />
+                    <button onclick="copyReferral()" class="px-3 py-2 rounded-lg bg-primary text-white hover:bg-primary/90 text-xs font-medium">
+                        <i class="ri-file-copy-line"></i> Copy
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- TASK TAB -->
+        <section id="task" class="tab-content px-4 py-6">
+            <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-6 mb-6">
+                <h2 class="text-xl font-bold mb-1">Complete Tasks</h2>
+                <p class="text-gray-600">Earn extra ads or unlocks</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- Watch Ads Task -->
+                <div class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="ri-play-circle-line text-primary text-xl"></i>
+                                <h3 class="text-lg font-semibold">Watch Ads</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Watch ads to increase your progress</p>
+                        </div>
+                        <span class="text-primary font-semibold">+1 progress</span>
+                    </div>
+                    <button id="watchAdsBtn" class="w-full bg-primary text-white py-3 rounded-lg font-medium">
+                        Watch Ad
+                    </button>
+                </div>
+
+                <!-- Telegram Channel Task -->
+                <div id="telegramCard" class="bg-white rounded-xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <i class="ri-telegram-line text-blue-500 text-xl"></i>
+                                <h3 class="text-lg font-semibold">Join Telegram Channel</h3>
+                            </div>
+                            <p class="text-sm text-gray-600">Get 3 free ad watches</p>
+                        </div>
+                        <span class="text-blue-500 font-semibold">+3 ads</span>
+                    </div>
+                    <div class="flex gap-3">
+                        <button id="joinChannelBtn" class="flex-1 bg-blue-500 text-white py-3 rounded-lg font-medium" data-link="https://t.me/anime_channel">
+                            Join Channel
+                        </button>
+                        <button id="verifyTelegramBtn" class="w-12 h-12 flex items-center justify-center bg-gray-100 rounded-lg">
+                            <i class="ri-check-line text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+        <div class="flex items-center justify-around h-16">
+            <button class="tab-btn active text-primary flex flex-col items-center justify-center gap-1 w-full" data-tab="home">
+                <i class="ri-home-line text-xl"></i>
+                <span class="text-xs">Home</span>
+            </button>
+            <button class="tab-btn flex flex-col items-center justify-center gap-1 w-full" data-tab="task">
+                <i class="ri-task-line text-xl"></i>
+                <span class="text-xs">Task</span>
+            </button>
         </div>
+    </nav>
 
-        <!-- Episode Grid -->
-        <div class="ep-grid" id="epGrid"></div>
+    <!-- Video Modal -->
+    <div id="videoModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold">Episode Video</h3>
+                <button onclick="closeVideoModal()" class="text-gray-400 hover:text-gray-600">
+                    <i class="ri-close-line text-2xl"></i>
+                </button>
+            </div>
+            <div id="videoPlayer" class="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+                <p class="text-gray-500">Loading video...</p>
+            </div>
+            <a id="videoLink" href="#" target="_blank" class="mt-4 w-full bg-red-500 text-white py-3 rounded-lg text-center block">
+                Open in Telegram
+            </a>
+        </div>
     </div>
 
-    <!-- Unlock Modal -->
-    <div id="adModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h2>🔓 UNLOCK VIDEO</h2>
-                <div class="ep-badge" id="modalEpisode">Episode 00</div>
-            </div>
-            
-            <!-- Step Indicator -->
-            <div class="step-indicator">
-                <div class="step-dot" id="step1">1</div>
-                <div class="step-dot" id="step2">2</div>
-                <div class="step-dot" id="step3">3</div>
-            </div>
-            
-            <!-- Status -->
-            <div id="modalStatus" class="status-text">වීඩියෝව ලබා ගැනීමට පියවර අනුගමනය කරන්න.</div>
-            
-            <!-- Loader -->
-            <div id="modalLoader" class="loader"></div>
-            
-            <!-- Timer -->
-            <div id="timerDisplay" class="timer-display"></div>
-            
-            <!-- Success -->
-            <div id="successMessage" class="success-message">✅ සාර්ථකයි!</div>
-            
-            <!-- Action Button -->
-            <button id="actionBtn" class="action-btn">ආරම්භ කරන්න</button>
-            <button id="closeModalBtn" class="close-btn" onclick="closeModal()">පසුව බලන්න</button>
-        </div>
-    </div>
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 space-y-3 z-50 w-80"></div>
 
     <script>
-        // ==================== TELEGRAM INIT ====================
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-        tg.ready();
-
-        // ==================== CONFIG ====================
-        const AD_LINK_1 = "https://omg10.com/4/10547747";  // First ad link
-        const AD_LINK_2 = "https://omg10.com/4/10547724";  // Second ad link
-        const START_EP = 104;
-        const END_EP = 135;
-
-        let currentEpisode = null;
-        let currentStep = 1;
-        let unlockedEpisodes = new Set();
-
-        // ==================== LOAD UNLOCKED EPISODES ====================
-        try {
-            const saved = localStorage.getItem('renegade_unlocked');
-            if (saved) {
-                unlockedEpisodes = new Set(JSON.parse(saved));
-                console.log('Loaded unlocked:', unlockedEpisodes);
+        // App State
+        const app = {
+            user: {
+                id: 123456,
+                name: "Anime Fan",
+                username: "@anime_fan",
+                avatar: "",
+                referrals: 0,
+                total_ads: 0,
+                ads_progress: 0, // 0-5
+                unlocked_episodes: [], // [1,3,5]
+                selected_episode: null,
+                telegram_joined: false
             }
-        } catch(e) {
-            console.error('Error loading saved episodes:', e);
-        }
+        };
 
-        // ==================== SAVE UNLOCKED EPISODES ====================
-        function saveUnlockedEpisodes() {
-            try {
-                localStorage.setItem('renegade_unlocked', JSON.stringify([...unlockedEpisodes]));
-            } catch(e) {
-                console.error('Error saving:', e);
-            }
-        }
+        // DOM Elements
+        const tg = window.Telegram?.WebApp;
+        if (tg) tg.ready();
 
-        // ==================== GENERATE EPISODES ====================
-        function generateEpisodes() {
-            const grid = document.getElementById('epGrid');
-            grid.innerHTML = '';
-
-            for (let i = START_EP; i <= END_EP; i++) {
-                const epNumber = i;
-                const epId = `EP${String(i).padStart(2, '0')}`;
-                
-                const card = document.createElement('div');
-                card.className = 'ep-tab';
-                if (unlockedEpisodes.has(epNumber.toString())) {
-                    card.classList.add('unlocked');
-                }
-                card.id = `ep-${epNumber}`;
-                card.dataset.epNumber = epNumber;
-                card.dataset.epId = epId;
-                
-                card.innerHTML = `
-                    <span class="ep-number">${epNumber}</span>
-                    <span class="ep-status">${unlockedEpisodes.has(epNumber.toString()) ? 'UNLOCKED' : 'LOCKED'}</span>
-                `;
-                
-                card.onclick = () => openModal(epNumber);
-                grid.appendChild(card);
-            }
-            
-            document.getElementById('epCount').textContent = `${START_EP}-${END_EP}`;
-        }
-
-        // ==================== FILTER EPISODES ====================
-        function filterEpisodes() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.ep-tab');
-            let visibleCount = 0;
-
-            cards.forEach(card => {
-                const epNumber = card.dataset.epNumber;
-                if (epNumber.includes(searchTerm)) {
-                    card.style.display = 'flex';
-                    visibleCount++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-
-            // Show no results message
-            const existingMsg = document.querySelector('.no-results');
-            if (visibleCount === 0) {
-                if (!existingMsg) {
-                    const msg = document.createElement('div');
-                    msg.className = 'no-results';
-                    msg.textContent = '❌ කිසිදු කථාංගයක් හමු නොවුණි';
-                    document.getElementById('epGrid').appendChild(msg);
-                }
-            } else {
-                if (existingMsg) existingMsg.remove();
-            }
-        }
-
-        // ==================== MODAL FUNCTIONS ====================
-        function openModal(epNumber) {
-            currentEpisode = epNumber;
-            document.getElementById('modalEpisode').textContent = `Episode ${epNumber}`;
-            document.getElementById('adModal').style.display = 'flex';
-            resetModal();
-            startStep1();
-        }
-
-        function closeModal() {
-            document.getElementById('adModal').style.display = 'none';
-            resetModal();
-        }
-
-        function resetModal() {
-            currentStep = 1;
-            document.getElementById('step1').className = 'step-dot active';
-            document.getElementById('step2').className = 'step-dot';
-            document.getElementById('step3').className = 'step-dot';
-            document.getElementById('successMessage').style.display = 'none';
-            document.getElementById('timerDisplay').textContent = '';
-            hideLoader();
-        }
-
-        function updateSteps(step) {
-            const steps = [1, 2, 3].map(i => document.getElementById(`step${i}`));
-            steps.forEach((dot, index) => {
-                dot.className = 'step-dot';
-                if (index + 1 < step) {
-                    dot.classList.add('completed');
-                } else if (index + 1 === step) {
-                    dot.classList.add('active');
-                }
-            });
-        }
-
-        function showLoader(text) {
-            document.getElementById('modalLoader').style.display = 'block';
-            document.getElementById('modalStatus').textContent = text;
-            document.getElementById('actionBtn').style.display = 'none';
-            document.getElementById('successMessage').style.display = 'none';
-        }
-
-        function hideLoader() {
-            document.getElementById('modalLoader').style.display = 'none';
-            document.getElementById('actionBtn').style.display = 'block';
-        }
-
-        function runTimer(seconds, callback) {
-            const timerDisplay = document.getElementById('timerDisplay');
-            let remaining = seconds;
-            
-            const interval = setInterval(() => {
-                timerDisplay.textContent = `⏳ ${remaining}s`;
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    timerDisplay.textContent = '';
-                    callback();
-                }
-                remaining--;
-            }, 1000);
-        }
-
-        // ==================== UNLOCK STEPS ====================
-        function startStep1() {
-            currentStep = 2;
-            updateSteps(2);
-            
-            const btn = document.getElementById('actionBtn');
-            const status = document.getElementById('modalStatus');
-            
-            hideLoader();
-            status.innerHTML = '<b>📢 පියවර 1/3:</b><br>පළමු දැන්වීම නරඹන්න.';
-            btn.textContent = 'දැන්වීම බලන්න →';
-            btn.onclick = () => {
-                window.open(AD_LINK_1, '_blank');
-                showLoader('⏳ මීළඟ පියවර සූදානම් වේ...');
-                runTimer(5, startStep2);
-            };
-        }
-
-        function startStep2() {
-            currentStep = 3;
-            updateSteps(3);
-            
-            const btn = document.getElementById('actionBtn');
-            const status = document.getElementById('modalStatus');
-            
-            hideLoader();
-            status.innerHTML = '<b>🎬 පියවර 2/3:</b><br>දෙවන දැන්වීම නරඹන්න.';
-            btn.textContent = 'දැන්වීම බලන්න →';
-            btn.onclick = () => {
-                window.open(AD_LINK_2, '_blank');
-                showLoader('⏳ සත්‍යාපනය වේ...');
-                runTimer(3, startStep3);
-            };
-        }
-
-        function startStep3() {
-            const btn = document.getElementById('actionBtn');
-            const status = document.getElementById('modalStatus');
-            
-            hideLoader();
-            status.innerHTML = '<b>✅ පියවර 3/3:</b><br>වීඩියෝව ලබා ගැනීමට පහත බොත්තම ඔබන්න.';
-            btn.textContent = '🎬 වීඩියෝව ලබා ගන්න';
-            btn.onclick = finalStep;
-        }
-
-        function finalStep() {
-            const btn = document.getElementById('actionBtn');
-            const status = document.getElementById('modalStatus');
-            const successMsg = document.getElementById('successMessage');
-            
-            // Mark as unlocked
-            unlockedEpisodes.add(currentEpisode.toString());
-            saveUnlockedEpisodes();
-            
-            // Update UI
-            const epCard = document.getElementById(`ep-${currentEpisode}`);
-            if (epCard) {
-                epCard.classList.add('unlocked');
-                epCard.querySelector('.ep-status').textContent = 'UNLOCKED';
-            }
-            
-            // Format episode ID for bot
-            const epIdToSend = `EP${String(currentEpisode).padStart(2, '0')}`;
-            
-            status.innerHTML = '<span style="color:var(--neon)">✨ සාර්ථකයි!</span><br>දැන් වීඩියෝව නරඹන්න.';
-            successMsg.style.display = 'block';
-            btn.textContent = '📺 වීඩියෝව බලන්න';
-            btn.onclick = () => {
-                console.log('Sending to bot:', { action: 'get_video', ep_id: epIdToSend });
-                
-                // Send to Telegram bot
-                tg.sendData(JSON.stringify({
-                    action: 'get_video',
-                    ep_id: epIdToSend
-                }));
-                
-                btn.textContent = '⏳ යවමින්...';
-                btn.disabled = true;
-                
-                setTimeout(() => {
-                    tg.close();
-                }, 1000);
-            };
-        }
-
-        // ==================== INITIALIZE ====================
-        window.addEventListener('load', () => {
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadUserData();
             generateEpisodes();
-            console.log('Mini App loaded successfully');
+            setupEventListeners();
+            updateUI();
         });
 
-        // Handle back button
-        tg.BackButton.onClick(() => {
-            if (document.getElementById('adModal').style.display === 'flex') {
-                closeModal();
-            } else {
-                tg.close();
+        function loadUserData() {
+            // Load from localStorage or Telegram
+            const saved = localStorage.getItem('anime_user_' + app.user.id);
+            if (saved) {
+                Object.assign(app.user, JSON.parse(saved));
             }
+            
+            // Get Telegram user if available
+            if (tg?.initDataUnsafe?.user) {
+                const user = tg.initDataUnsafe.user;
+                app.user.name = user.first_name + ' ' + (user.last_name || '');
+                app.user.username = user.username ? '@' + user.username : '@user';
+                app.user.id = user.id;
+            }
+        }
+
+        function saveUserData() {
+            localStorage.setItem('anime_user_' + app.user.id, JSON.stringify(app.user));
+        }
+
+        function generateEpisodes() {
+            const grid = document.getElementById('episode-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= 50; i++) {
+                const isUnlocked = app.user.unlocked_episodes.includes(i);
+                const isSelected = app.user.selected_episode === i;
+                
+                const box = document.createElement('div');
+                box.className = `episode-box ${isUnlocked ? 'episode-unlocked' : 'episode-locked'} ${isSelected ? 'episode-selected' : ''}`;
+                box.textContent = i;
+                box.dataset.episode = i;
+                
+                box.addEventListener('click', () => onEpisodeClick(i));
+                grid.appendChild(box);
+            }
+        }
+
+        function onEpisodeClick(episode) {
+            if (app.user.unlocked_episodes.includes(episode)) {
+                // Already unlocked - play video
+                playEpisode(episode);
+            } else {
+                // Locked - select for unlocking
+                if (app.user.selected_episode === episode) {
+                    app.user.selected_episode = null;
+                } else {
+                    app.user.selected_episode = episode;
+                }
+                generateEpisodes();
+                updateUI();
+            }
+        }
+
+        function playEpisode(episode) {
+            // Forward from Telegram channel
+            const videoUrl = `https://t.me/anime_channel/${episode}`;
+            document.getElementById('videoLink').href = videoUrl;
+            document.getElementById('videoModal').classList.remove('hidden');
+            
+            // In real implementation, use Telegram API to forward
+            showToast('Opening episode ' + episode, 'info');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+        }
+
+        // Watch Ad Function
+        document.getElementById('watchAdsBtn')?.addEventListener('click', async () => {
+            if (app.user.ads_progress >= 5) {
+                if (!app.user.selected_episode) {
+                    showToast('Select an episode first!', 'error');
+                    return;
+                }
+                
+                // Unlock episode
+                app.user.unlocked_episodes.push(app.user.selected_episode);
+                app.user.ads_progress = 0;
+                app.user.selected_episode = null;
+                showToast('Episode unlocked! 🎉', 'success');
+            } else {
+                // Watch ad
+                app.user.ads_progress++;
+                app.user.total_ads++;
+                showToast('Ad watched! Progress: ' + app.user.ads_progress + '/5', 'success');
+            }
+            
+            app.user.ads_progress = app.user.ads_progress % 6; // Reset at 5
+            saveUserData();
+            generateEpisodes();
+            updateUI();
+        });
+
+        // Telegram Join
+        document.getElementById('joinChannelBtn')?.addEventListener('click', () => {
+            window.open('https://t.me/anime_channel', '_blank');
+            
+            // Simulate verification after 3 seconds
+            setTimeout(() => {
+                if (!app.user.telegram_joined) {
+                    app.user.telegram_joined = true;
+                    app.user.ads_progress = Math.min(app.user.ads_progress + 3, 5);
+                    saveUserData();
+                    updateUI();
+                    showToast('+3 ad credits!', 'success');
+                }
+            }, 3000);
+        });
+
+        document.getElementById('verifyTelegramBtn')?.addEventListener('click', () => {
+            if (!app.user.telegram_joined) {
+                showToast('Join the channel first!', 'error');
+            }
+        });
+
+        function updateUI() {
+            document.getElementById('name').textContent = app.user.name;
+            document.getElementById('username').textContent = app.user.username;
+            document.getElementById('total_ads').textContent = app.user.total_ads;
+            document.getElementById('total_refer').textContent = app.user.referrals;
+            document.getElementById('unlocked_count').textContent = app.user.unlocked_episodes.length;
+            
+            // Ads progress bar
+            const progress = (app.user.ads_progress / 5) * 100;
+            document.getElementById('ads-progress-bar').style.width = progress + '%';
+            document.getElementById('ads-status').textContent = `${app.user.ads_progress}/5 ads watched`;
+            
+            const remaining = 5 - app.user.ads_progress;
+            document.getElementById('next-unlock').textContent = 
+                remaining === 0 ? 'Ready to unlock!' : `${remaining} ads needed`;
+            
+            // Referral link
+            document.getElementById('refer-link').value = `https://t.me/anime_bot?start=${app.user.id}`;
+            
+            // Check ads free
+            if (app.user.referrals >= 10) {
+                document.getElementById('watchAdsBtn').textContent = 'Watch Episode (Ads Free)';
+            }
+        }
+
+        function copyReferral() {
+            const link = document.getElementById('refer-link');
+            link.select();
+            navigator.clipboard?.writeText(link.value);
+            showToast('Copied!', 'success');
+        }
+
+        function showToast(msg, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-lg text-white ${type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'} shadow-lg`;
+            toast.textContent = msg;
+            
+            const container = document.getElementById('toast-container');
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active', 'text-primary'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                btn.classList.add('active', 'text-primary');
+                document.getElementById(btn.dataset.tab).classList.add('active');
+            });
         });
     </script>
 </body>
