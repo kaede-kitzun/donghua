@@ -3,144 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Renegade Immortal - Progress App</title>
+    <title>Renegade Progress App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #3b82f6;
-            --dark: #0f172a;
-            --bg: #f8fafc;
-        }
+        :root { --primary: #3b82f6; --dark: #0f172a; --bg: #f8fafc; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: var(--dark); padding-bottom: 70px; }
-
-        /* Navigation Tabs */
-        .tabs {
-            display: flex;
-            background: white;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .tab {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            font-weight: 600;
-            cursor: pointer;
-            color: #64748b;
-            border-bottom: 2px solid transparent;
-        }
-        .tab.active {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-        }
-
-        /* Progress Section */
-        .progress-container {
-            background: white;
-            margin: 15px;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-        }
-        .progress-label { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: 600; }
-        .progress-bar-bg { background: #e2e8f0; height: 12px; border-radius: 6px; overflow: hidden; }
-        .progress-bar-fill { 
-            background: var(--primary); 
-            height: 100%; 
-            width: 0%; 
-            transition: width 0.4s ease; 
-            box-shadow: 0 0 10px rgba(59,130,246,0.5);
-        }
-
-        /* Content Pages */
-        .page { display: none; padding: 15px; }
+        body { background: var(--bg); padding-bottom: 20px; }
+        
+        /* Navigation */
+        .tabs { display: flex; background: white; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .tab { flex: 1; padding: 15px; text-align: center; font-weight: 600; color: #64748b; cursor: pointer; }
+        .tab.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
+        
+        /* Pages */
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Task Buttons */
-        .task-card {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .btn {
-            background: var(--dark);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
-
+        /* Progress Bar */
+        .card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
+        .bar-bg { background: #e2e8f0; height: 12px; border-radius: 6px; margin: 10px 0; overflow: hidden; }
+        .bar-fill { background: var(--primary); height: 100%; width: 0%; transition: width 0.5s ease; }
+        
         /* Episode Grid */
         .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .ep-card {
-            background: white;
-            padding: 15px 5px;
-            border-radius: 12px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-            transition: 0.2s;
-        }
-        .ep-card.locked { opacity: 0.5; background: #f1f5f9; }
-        .ep-card.unlocked { border-color: var(--primary); box-shadow: 0 0 8px rgba(59,130,246,0.2); }
+        .ep-btn { background: white; border: 1px solid #e2e8f0; padding: 15px 5px; border-radius: 12px; text-align: center; cursor: pointer; }
+        .ep-btn.locked { opacity: 0.5; background: #f1f5f9; }
+        .ep-btn.ready { border-color: var(--primary); color: var(--primary); font-weight: 800; }
 
-        /* Bottom Nav (Floating) */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; width: 100%;
-            background: white;
-            display: flex;
-            padding: 10px 0;
-            border-top: 1px solid #e2e8f0;
-        }
+        /* Buttons */
+        .btn { background: var(--dark); color: white; border: none; padding: 12px 25px; border-radius: 10px; font-weight: 600; width: 100%; cursor: pointer; }
+        .btn:disabled { background: #cbd5e1; }
     </style>
 </head>
 <body>
 
     <div class="tabs">
-        <div class="tab active" onclick="showPage('home')">🏠 HOME</div>
-        <div class="tab" onclick="showPage('task')">📋 TASK</div>
+        <div id="tabHome" class="tab active" onclick="showPage('home')">🏠 HOME</div>
+        <div id="tabTask" class="tab" onclick="showPage('task')">📋 TASK</div>
     </div>
 
     <div id="home" class="page active">
-        <div class="progress-container">
-            <div class="progress-label">
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; font-weight:600;">
                 <span>Unlock Progress</span>
-                <span id="progressText">0/3 Ads</span>
+                <span id="progressText">0/3</span>
             </div>
-            <div class="progress-bar-bg">
-                <div id="progressBar" class="progress-bar-fill"></div>
-            </div>
-            <p id="statusHint" style="font-size: 12px; color: #64748b; margin-top: 10px;">
-                Ads 3 ක් නරඹා ඕනෑම Episode එකක් Unlock කරගන්න.
-            </p>
+            <div class="bar-bg"><div id="barFill" class="bar-fill"></div></div>
+            <p id="hint" style="font-size: 12px; color: #64748b;">Ads 3 ක් නරඹා ඕනෑම Episode එකක් Unlock කරගන්න.</p>
         </div>
-
-        <h3 style="margin-bottom: 15px;">Choose Episode</h3>
+        <h3 style="margin-bottom:10px;">Episodes</h3>
         <div class="grid" id="episodeGrid"></div>
     </div>
 
     <div id="task" class="page">
-        <h3 style="margin-bottom: 20px;">Watch Ads to Unlock</h3>
-        <div class="task-card">
-            <div>
-                <h4 id="taskTitle">Watch Ad #1</h4>
-                <p style="font-size: 13px; color: #64748b;">Get 1 credit</p>
-            </div>
-            <button id="adBtn" class="btn" onclick="watchAd()">Watch Now</button>
-        </div>
-        <div id="completeMsg" style="display:none; text-align:center; color:green; font-weight:600;">
-            ✅ සියලුම Ads නරඹා අවසන්! දැන් Home වෙත ගොස් වීඩියෝව ලබාගන්න.
+        <div class="card" style="text-align:center;">
+            <h2 id="taskStatus">Ready to watch?</h2>
+            <p id="taskSub" style="color:#64748b; margin: 10px 0 20px;">Ad එක බැලූ පසු App එක වැසෙනු ඇත.</p>
+            <button id="adBtn" class="btn" onclick="startAd()">WATCH AD NOW</button>
         </div>
     </div>
 
@@ -148,91 +69,62 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
-        let adCount = 0;
-        const AD_LINKS = [
-            "https://omg10.com/4/10547747",
-            "https://omg10.com/4/10547724",
-            "https://omg10.com/4/10547747" // 3 වෙනි ලින්ක් එක
-        ];
+        // URL එකෙන් Data ලබා ගැනීම
+        const params = new URLSearchParams(window.location.search);
+        let adCount = parseInt(params.get('ad_count')) || 0;
 
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            event.currentTarget.classList.add('active');
+            if(pageId === 'home') document.getElementById('tabHome').classList.add('active');
+            else document.getElementById('tabTask').classList.add('active');
         }
 
         function updateUI() {
             const percentage = (adCount / 3) * 100;
-            document.getElementById('progressBar').style.width = percentage + "%";
+            document.getElementById('barFill').style.width = percentage + "%";
             document.getElementById('progressText').innerText = `${adCount}/3 Ads`;
             
-            // Task page update
-            if(adCount < 3) {
-                document.getElementById('taskTitle').innerText = `Watch Ad #${adCount + 1}`;
-                document.getElementById('adBtn').style.display = 'block';
-                document.getElementById('completeMsg').style.display = 'none';
-            } else {
-                document.getElementById('adBtn').style.display = 'none';
-                document.getElementById('completeMsg').style.display = 'block';
-                document.getElementById('statusHint').innerText = "✅ ඔබට දැන් Episode එකක් Unlock කළ හැක!";
-                document.getElementById('statusHint').style.color = "#3b82f6";
+            if(adCount >= 3) {
+                document.getElementById('hint').innerText = "✅ ඔබට දැන් වීඩියෝවක් ලබාගත හැක!";
+                document.getElementById('adBtn').disabled = true;
+                document.getElementById('taskStatus').innerText = "All Tasks Done!";
             }
-
             renderEpisodes();
         }
 
-        function watchAd() {
-            window.open(AD_LINKS[adCount], '_blank');
-            // මෙතනදී ඇත්තටම user ඇඩ් එක බැලුවද කියලා බලන්න බැහැ, 
-            // නමුත් අපි තත්පර 5 කට පස්සේ බැලුවා කියලා උපකල්පනය කරනවා.
-            const btn = document.getElementById('adBtn');
-            btn.disabled = true;
-            btn.innerText = "Verifying...";
-
+        function startAd() {
+            // ඔබේ Ad Link එක මෙතනට දමන්න
+            window.open("https://omg10.com/4/10547747", '_blank');
+            
+            // Bot වෙත Data යැවීම (මෙය කළ පසු App එක වැසෙනු ඇත)
             setTimeout(() => {
-                adCount++;
-                btn.disabled = false;
-                btn.innerText = "Watch Now";
-                updateUI();
-            }, 5000);
+                tg.sendData(JSON.stringify({ action: "update_ads" }));
+            }, 2000);
         }
 
         function renderEpisodes() {
             const grid = document.getElementById('episodeGrid');
             grid.innerHTML = '';
-            const isUnlocked = adCount >= 3;
+            const ready = adCount >= 3;
 
             for (let i = 104; i <= 135; i++) {
-                const card = document.createElement('div');
-                card.className = `ep-card ${isUnlocked ? 'unlocked' : 'locked'}`;
-                card.innerHTML = `<div style="font-weight:800">${i}</div><div style="font-size:9px">EP</div>`;
-                
-                if(isUnlocked) {
-                    card.onclick = () => unlockEpisode(i);
-                } else {
-                    card.onclick = () => tg.showAlert("කරුණාකර ප්‍රථමයෙන් Ads 3 නරඹා සිටින්න.");
-                }
-                grid.appendChild(card);
+                const btn = document.createElement('div');
+                btn.className = `ep-btn ${ready ? 'ready' : 'locked'}`;
+                btn.innerHTML = `<div>${i}</div><div style="font-size:10px">EP</div>`;
+                btn.onclick = () => {
+                    if(ready) {
+                        tg.sendData(JSON.stringify({ action: "get_video", ep_id: i.toString() }));
+                    } else {
+                        tg.showAlert("කරුණාකර ප්‍රථමයෙන් Ads 3 සම්පූර්ණ කරන්න.");
+                    }
+                };
+                grid.appendChild(btn);
             }
         }
 
-        function unlockEpisode(epId) {
-            tg.showConfirm(`Episode ${epId} ලබා ගැනීමට අවශ්‍යද?`, (ok) => {
-                if(ok) {
-                    tg.sendData(JSON.stringify({ 
-                        action: "get_video", 
-                        ep_id: epId.toString() 
-                    }));
-                    // Reset progress after success
-                    adCount = 0;
-                    updateUI();
-                    tg.close();
-                }
-            });
-        }
-
-        // Init
+        // මුලින්ම UI එක Update කරන්න
         updateUI();
     </script>
 </body>
