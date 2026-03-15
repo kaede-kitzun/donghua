@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Renegade Immortal - Episodes</title>
-    
+    <title>Renegade Immortal</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
@@ -18,359 +17,404 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: #f5f7fa;
-            min-height: 100vh;
+            background: #f8fafc;
             color: #1e293b;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Main Container */
         .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
             max-width: 480px;
             margin: 0 auto;
+            width: 100%;
             background: #ffffff;
-            min-height: 100vh;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Header Section */
+        /* Header */
         .header {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            background: linear-gradient(135deg, #0f172a, #1e293b);
             color: white;
-            padding: 24px 20px;
-            border-bottom-left-radius: 24px;
-            border-bottom-right-radius: 24px;
+            padding: 20px;
         }
 
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .logo h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.5px;
             color: white;
         }
 
         .logo span {
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 11px;
             color: #94a3b8;
-            display: block;
-            margin-top: 2px;
         }
 
         .join-btn {
             background: rgba(255,255,255,0.1);
             border: 1px solid rgba(255,255,255,0.2);
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 20px;
             color: white;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             text-decoration: none;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s;
         }
 
-        .join-btn:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Profile Card - Lightweight */
+        /* Profile */
         .profile-card {
             background: rgba(255,255,255,0.08);
             border-radius: 16px;
-            padding: 16px;
+            padding: 14px;
             display: flex;
             align-items: center;
-            gap: 16px;
-            backdrop-filter: blur(10px);
+            gap: 14px;
             border: 1px solid rgba(255,255,255,0.1);
-            margin-top: 8px;
         }
 
         .profile-avatar {
-            width: 56px;
-            height: 56px;
-            border-radius: 28px;
+            width: 48px;
+            height: 48px;
+            border-radius: 24px;
             background: linear-gradient(135deg, #3b82f6, #8b5cf6);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
             font-weight: 700;
-            font-size: 20px;
-            box-shadow: 0 4px 10px rgba(59,130,246,0.3);
+            font-size: 18px;
+            color: white;
         }
 
         .profile-info {
             flex: 1;
         }
 
-        .welcome-tag {
-            font-size: 12px;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 2px;
-        }
-
         .profile-name {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 16px;
             color: white;
-            margin-bottom: 2px;
         }
 
         .profile-username {
-            font-size: 12px;
-            color: #94a3b8;
-        }
-
-        /* Stats Bar */
-        .stats-bar {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-            background: white;
-            border-radius: 20px;
-            margin: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            border: 1px solid #f1f5f9;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-value {
-            font-weight: 800;
-            font-size: 20px;
-            color: #0f172a;
-        }
-
-        .stat-label {
             font-size: 11px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 4px;
-        }
-
-        /* Search Section */
-        .search-section {
-            padding: 0 20px 20px;
-        }
-
-        .search-box {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            padding: 14px 18px;
-            width: 100%;
-            font-family: 'Inter', sans-serif;
-            font-size: 15px;
-            color: #1e293b;
-            transition: all 0.2s;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: #3b82f6;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-        }
-
-        .search-box::placeholder {
             color: #94a3b8;
         }
 
-        /* Episodes Section */
-        .episodes-section {
-            padding: 0 20px 30px;
+        /* Ad Progress Bar - නව feature එක */
+        .ad-progress-section {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
         }
 
-        .section-header {
+        .progress-label {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 10px;
         }
 
-        .section-title {
+        .progress-title {
             font-weight: 700;
-            font-size: 18px;
+            font-size: 14px;
             color: #0f172a;
         }
 
-        .episode-count {
-            background: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 20px;
+        .progress-count {
             font-size: 12px;
             font-weight: 600;
-            color: #475569;
+            color: #3b82f6;
+            background: #eef2ff;
+            padding: 4px 10px;
+            border-radius: 20px;
         }
 
-        /* Episode Grid - Optimized Grid Layout */
+        .progress-bar-container {
+            display: flex;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .progress-segment {
+            flex: 1;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.completed {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            box-shadow: 0 2px 8px rgba(59,130,246,0.3);
+        }
+
+        .unlock-status {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 12px;
+            padding: 8px;
+            background: #f8fafc;
+            border-radius: 12px;
+        }
+
+        .unlock-status.active {
+            color: #059669;
+            background: #d1fae5;
+        }
+
+        /* Content Area - Tab Content */
+        .content-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #ffffff;
+        }
+
+        /* Home Tab */
+        #homeTab {
+            display: block;
+        }
+
+        #taskTab {
+            display: none;
+        }
+
         .episode-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 12px;
+            margin-top: 15px;
         }
 
-        /* Episode Card - No Images, Just Text */
         .episode-card {
-            background: white;
+            background: #f8fafc;
             border: 1px solid #f1f5f9;
-            border-radius: 16px;
-            padding: 16px 8px;
+            border-radius: 14px;
+            padding: 14px 8px;
             text-align: center;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.2s;
         }
 
-        .episode-card:active {
-            transform: scale(0.96);
-            background: #f8fafc;
+        .episode-card.active {
+            background: white;
             border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59,130,246,0.15);
+        }
+
+        .episode-card.locked {
+            opacity: 0.7;
+            filter: grayscale(0.5);
         }
 
         .episode-number {
             font-weight: 800;
-            font-size: 20px;
+            font-size: 18px;
             color: #0f172a;
             margin-bottom: 4px;
         }
 
         .episode-label {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
             color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
-        /* Modal - Optimized */
+        .lock-icon {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Task Tab - Ad Watch Section */
+        .ads-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .ad-card {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 18px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: all 0.2s;
+        }
+
+        .ad-card.completed {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+
+        .ad-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .ad-info {
+            flex: 1;
+        }
+
+        .ad-title {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .ad-reward {
+            font-size: 12px;
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .ad-status {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        .watch-ad-btn {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .watch-ad-btn:active {
+            background: #1e293b;
+            transform: scale(0.96);
+        }
+
+        .watch-ad-btn.completed {
+            background: #e2e8f0;
+            color: #64748b;
+            pointer-events: none;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            background: white;
+            border-top: 1px solid #f1f5f9;
+            padding: 8px 0;
+            box-shadow: 0 -4px 10px rgba(0,0,0,0.02);
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            gap: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #94a3b8;
+        }
+
+        .nav-item.active {
+            color: #3b82f6;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Modal */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(15, 23, 42, 0.98);
+            background: rgba(15,23,42,0.98);
             display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
             z-index: 1000;
-            backdrop-filter: blur(8px);
         }
 
         .modal-content {
             background: white;
             border-radius: 28px;
-            padding: 28px 24px;
+            padding: 24px;
             width: 100%;
-            max-width: 360px;
+            max-width: 340px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-
-        .modal-icon {
-            width: 64px;
-            height: 64px;
-            border-radius: 32px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 20px;
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
         }
 
         .modal-title {
-            font-weight: 700;
-            font-size: 22px;
+            font-weight: 800;
+            font-size: 20px;
             color: #0f172a;
             margin-bottom: 8px;
         }
 
-        .modal-episode {
+        .modal-text {
+            color: #64748b;
             font-size: 14px;
-            color: #3b82f6;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-
-        .modal-steps {
-            margin: 24px 0;
-            text-align: left;
-        }
-
-        .step {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            color: #475569;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .step-number {
-            width: 28px;
-            height: 28px;
-            border-radius: 14px;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 13px;
-            color: #0f172a;
-        }
-
-        .step.active .step-number {
-            background: #3b82f6;
-            color: white;
+            margin: 16px 0;
+            line-height: 1.6;
         }
 
         .modal-btn {
             background: #0f172a;
             color: white;
             border: none;
-            padding: 18px 24px;
+            padding: 16px;
             border-radius: 16px;
             font-weight: 700;
-            font-size: 16px;
             width: 100%;
             cursor: pointer;
-            transition: all 0.2s;
             margin-top: 8px;
-        }
-
-        .modal-btn:active {
-            background: #1e293b;
-            transform: scale(0.98);
         }
 
         .modal-btn.secondary {
             background: #f1f5f9;
             color: #475569;
-        }
-
-        .modal-btn.secondary:active {
-            background: #e2e8f0;
         }
 
         .timer {
@@ -394,33 +438,6 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
-        .status-text {
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-            margin: 16px 0;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            color: #94a3b8;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 16px;
-            cursor: pointer;
-            padding: 8px;
-        }
-
-        /* No Results */
-        .no-results {
-            text-align: center;
-            padding: 40px 20px;
-            color: #94a3b8;
-            font-weight: 500;
-            grid-column: span 4;
-        }
     </style>
 </head>
 <body>
@@ -440,76 +457,132 @@
                 </a>
             </div>
 
-            <!-- Profile Card - No Images -->
+            <!-- Profile -->
             <div id="profileCard" class="profile-card" style="display: none;">
                 <div id="profileAvatar" class="profile-avatar"></div>
                 <div class="profile-info">
-                    <div class="welcome-tag">WELCOME BACK</div>
                     <div id="profileName" class="profile-name"></div>
                     <div id="profileUsername" class="profile-username"></div>
                 </div>
             </div>
         </div>
 
-        <!-- Stats Bar -->
-        <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-value">32</div>
-                <div class="stat-label">EPISODES</div>
+        <!-- Ad Progress Bar -->
+        <div class="ad-progress-section">
+            <div class="progress-label">
+                <span class="progress-title">📺 Ad Watch Progress</span>
+                <span id="adProgressCount" class="progress-count">0/5</span>
             </div>
-            <div class="stat-item">
-                <div class="stat-value">HD</div>
-                <div class="stat-label">QUALITY</div>
+            <div class="progress-bar-container" id="progressBar">
+                <div class="progress-segment" id="segment1"></div>
+                <div class="progress-segment" id="segment2"></div>
+                <div class="progress-segment" id="segment3"></div>
+                <div class="progress-segment" id="segment4"></div>
+                <div class="progress-segment" id="segment5"></div>
             </div>
-            <div class="stat-item">
-                <div class="stat-value">සිං</div>
-                <div class="stat-label">SUBTITLES</div>
+            <div id="unlockStatus" class="unlock-status">
+                👆 Watch 5 ads to unlock an episode
             </div>
         </div>
 
-        <!-- Search Section -->
-        <div class="search-section">
-            <input type="number" id="searchInput" class="search-box" placeholder="🔍 Search episode number..." onkeyup="filterEpisodes()">
+        <!-- Content Area -->
+        <div class="content-area" id="contentArea">
+            <!-- Home Tab (Episodes) -->
+            <div id="homeTab">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h3 style="font-weight: 700; font-size: 16px;">Available Episodes</h3>
+                    <span style="background: #f1f5f9; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600;">32</span>
+                </div>
+                <input type="number" id="searchInput" placeholder="🔍 Search episode number..." style="width: 100%; padding: 14px; border: 1px solid #e2e8f0; border-radius: 14px; margin-bottom: 20px; font-family: 'Inter';">
+                <div class="episode-grid" id="episodeGrid"></div>
+            </div>
+
+            <!-- Task Tab (Ads) -->
+            <div id="taskTab">
+                <h3 style="font-weight: 700; font-size: 16px; margin-bottom: 10px;">📺 Watch Ads to Unlock</h3>
+                <p style="color: #64748b; font-size: 13px; margin-bottom: 20px;">Watch 5 ads and unlock any episode</p>
+                
+                <div class="ads-grid" id="adsGrid">
+                    <!-- Ad 1 -->
+                    <div class="ad-card" id="adCard1">
+                        <div class="ad-icon">1</div>
+                        <div class="ad-info">
+                            <div class="ad-title">Watch Ad #1</div>
+                            <div class="ad-reward">+1 Progress</div>
+                        </div>
+                        <div id="adStatus1" class="ad-status">Pending</div>
+                        <button id="adBtn1" class="watch-ad-btn" onclick="watchAd(1)">Watch</button>
+                    </div>
+                    
+                    <!-- Ad 2 -->
+                    <div class="ad-card" id="adCard2">
+                        <div class="ad-icon">2</div>
+                        <div class="ad-info">
+                            <div class="ad-title">Watch Ad #2</div>
+                            <div class="ad-reward">+1 Progress</div>
+                        </div>
+                        <div id="adStatus2" class="ad-status">Pending</div>
+                        <button id="adBtn2" class="watch-ad-btn" onclick="watchAd(2)">Watch</button>
+                    </div>
+                    
+                    <!-- Ad 3 -->
+                    <div class="ad-card" id="adCard3">
+                        <div class="ad-icon">3</div>
+                        <div class="ad-info">
+                            <div class="ad-title">Watch Ad #3</div>
+                            <div class="ad-reward">+1 Progress</div>
+                        </div>
+                        <div id="adStatus3" class="ad-status">Pending</div>
+                        <button id="adBtn3" class="watch-ad-btn" onclick="watchAd(3)">Watch</button>
+                    </div>
+                    
+                    <!-- Ad 4 -->
+                    <div class="ad-card" id="adCard4">
+                        <div class="ad-icon">4</div>
+                        <div class="ad-info">
+                            <div class="ad-title">Watch Ad #4</div>
+                            <div class="ad-reward">+1 Progress</div>
+                        </div>
+                        <div id="adStatus4" class="ad-status">Pending</div>
+                        <button id="adBtn4" class="watch-ad-btn" onclick="watchAd(4)">Watch</button>
+                    </div>
+                    
+                    <!-- Ad 5 -->
+                    <div class="ad-card" id="adCard5">
+                        <div class="ad-icon">5</div>
+                        <div class="ad-info">
+                            <div class="ad-title">Watch Ad #5</div>
+                            <div class="ad-reward">🎬 Unlock Episode</div>
+                        </div>
+                        <div id="adStatus5" class="ad-status">Pending</div>
+                        <button id="adBtn5" class="watch-ad-btn" onclick="watchAd(5)">Watch</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Episodes Section -->
-        <div class="episodes-section">
-            <div class="section-header">
-                <h2 class="section-title">Available Episodes</h2>
-                <span class="episode-count" id="episodeCount">32</span>
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" id="navHome" onclick="switchTab('home')">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
             </div>
-            <div class="episode-grid" id="episodeGrid"></div>
+            <div class="nav-item" id="navTask" onclick="switchTab('task')">
+                <span class="nav-icon">📺</span>
+                <span class="nav-label">Watch Ads</span>
+            </div>
         </div>
     </div>
 
     <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <div class="modal-icon" id="modalIcon">🎬</div>
-            <div class="modal-title" id="modalTitle">Unlock Episode</div>
-            <div class="modal-episode" id="modalEpisode"></div>
-            
-            <div class="modal-steps" id="modalSteps">
-                <div class="step active" id="step1">
-                    <div class="step-number">1</div>
-                    <div>Watch first ad</div>
-                </div>
-                <div class="step" id="step2">
-                    <div class="step-number">2</div>
-                    <div>Complete verification</div>
-                </div>
-                <div class="step" id="step3">
-                    <div class="step-number">3</div>
-                    <div>Get video</div>
-                </div>
-            </div>
-
-            <div id="statusMessage" class="status-text"></div>
-            <div id="timer" class="timer"></div>
-            <div id="loader" class="loader"></div>
-
-            <button id="actionBtn" class="modal-btn">Start</button>
-            <button id="closeModalBtn" class="close-btn" onclick="closeModal()">Watch Later</button>
+            <div class="modal-title" id="modalTitle">Watch Ad</div>
+            <div class="modal-text" id="modalText">Opening advertisement...</div>
+            <div id="modalTimer" class="timer"></div>
+            <div id="modalLoader" class="loader"></div>
+            <button id="modalActionBtn" class="modal-btn">Continue</button>
+            <button class="modal-btn secondary" onclick="closeModal()">Cancel</button>
         </div>
     </div>
 
@@ -518,230 +591,337 @@
         tg.expand();
 
         // Configuration
-        const AD_LINK_1 = "https://omg10.com/4/10547747";
-        const AD_LINK_2 = "https://omg10.com/4/10547724";
-        let currentEpisode = null;
-        let currentStep = 1;
+        const AD_LINK = "https://omg10.com/4/10547747";
+        const BOT_API_URL = window.location.origin; // Your bot webhook URL
+        
+        let userId = null;
+        let adsWatched = 0;
+        let canUnlock = false;
+        let selectedEpisode = null;
 
         // Get user data from URL
         function getUserData() {
             const params = new URLSearchParams(window.location.search);
+            userId = params.get('user_id');
             return {
-                userId: params.get('user_id'),
                 firstName: params.get('first_name'),
                 username: params.get('username')
             };
         }
 
-        // Show profile card
+        // Show profile
         function showProfile() {
             const userData = getUserData();
             if (userData.firstName) {
-                const profileCard = document.getElementById('profileCard');
-                const profileAvatar = document.getElementById('profileAvatar');
-                const profileName = document.getElementById('profileName');
-                const profileUsername = document.getElementById('profileUsername');
-
-                // Set avatar with first letter
-                profileAvatar.textContent = userData.firstName.charAt(0).toUpperCase();
-                
-                // Set name
-                profileName.textContent = userData.firstName;
-                
-                // Set username
-                if (userData.username) {
-                    profileUsername.textContent = '@' + userData.username;
-                } else {
-                    profileUsername.textContent = 'Telegram User';
-                }
-
-                profileCard.style.display = 'flex';
+                document.getElementById('profileCard').style.display = 'flex';
+                document.getElementById('profileAvatar').textContent = userData.firstName.charAt(0).toUpperCase();
+                document.getElementById('profileName').textContent = userData.firstName;
+                document.getElementById('profileUsername').textContent = userData.username ? '@' + userData.username : 'Telegram User';
             }
         }
 
-        // Generate episodes (104 to 135)
+        // Load user's ad status from bot
+        async function loadAdStatus() {
+            if (!userId) return;
+            
+            try {
+                // Send message to bot to get ad status
+                tg.sendData(JSON.stringify({
+                    action: "get_ad_status",
+                    user_id: userId
+                }));
+                
+                // Note: Bot will respond with webhook, we need to handle that
+                // For demo, we'll use localStorage
+                const saved = localStorage.getItem(`ads_${userId}`);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    adsWatched = data.adsWatched || 0;
+                    canUnlock = data.canUnlock || false;
+                    updateAdUI();
+                }
+            } catch(e) {
+                console.log('Error loading status:', e);
+            }
+        }
+
+        // Update UI based on ad status
+        function updateAdUI() {
+            // Update progress bar
+            for (let i = 1; i <= 5; i++) {
+                const segment = document.getElementById(`segment${i}`);
+                if (i <= adsWatched) {
+                    segment.classList.add('completed');
+                } else {
+                    segment.classList.remove('completed');
+                }
+            }
+            
+            // Update count
+            document.getElementById('adProgressCount').textContent = `${adsWatched}/5`;
+            
+            // Update unlock status
+            const statusEl = document.getElementById('unlockStatus');
+            if (adsWatched >= 5) {
+                statusEl.innerHTML = '✅ You can unlock ONE episode now!';
+                statusEl.classList.add('active');
+                canUnlock = true;
+            } else {
+                statusEl.innerHTML = `👆 Watch ${5-adsWatched} more ads to unlock an episode`;
+                statusEl.classList.remove('active');
+                canUnlock = false;
+            }
+            
+            // Update ad cards
+            for (let i = 1; i <= 5; i++) {
+                const card = document.getElementById(`adCard${i}`);
+                const btn = document.getElementById(`adBtn${i}`);
+                const status = document.getElementById(`adStatus${i}`);
+                
+                if (i <= adsWatched) {
+                    card.classList.add('completed');
+                    btn.classList.add('completed');
+                    btn.disabled = true;
+                    btn.textContent = 'Watched';
+                    status.textContent = '✅ Completed';
+                    status.style.color = '#059669';
+                } else {
+                    card.classList.remove('completed');
+                    btn.classList.remove('completed');
+                    btn.disabled = false;
+                    btn.textContent = 'Watch';
+                    status.textContent = 'Pending';
+                    status.style.color = '#64748b';
+                }
+            }
+            
+            // Update episode cards (lock/unlock)
+            updateEpisodeLocks();
+        }
+
+        // Update episode locks
+        function updateEpisodeLocks() {
+            const cards = document.querySelectorAll('.episode-card');
+            cards.forEach(card => {
+                if (canUnlock) {
+                    card.classList.remove('locked');
+                } else {
+                    card.classList.add('locked');
+                }
+            });
+        }
+
+        // Watch ad
+        function watchAd(adNumber) {
+            if (adNumber > adsWatched + 1) {
+                alert('Please watch previous ads first!');
+                return;
+            }
+            
+            showAdModal(adNumber);
+        }
+
+        // Show ad modal
+        function showAdModal(adNumber) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const modalTimer = document.getElementById('modalTimer');
+            const modalLoader = document.getElementById('modalLoader');
+            const modalBtn = document.getElementById('modalActionBtn');
+            
+            modal.style.display = 'flex';
+            modalTitle.textContent = `Watch Ad #${adNumber}`;
+            modalText.textContent = 'Opening advertisement...';
+            modalLoader.style.display = 'block';
+            modalTimer.style.display = 'none';
+            modalBtn.style.display = 'none';
+            
+            // Open ad in new tab
+            window.open(AD_LINK, '_blank');
+            
+            // Simulate ad watch completion
+            setTimeout(() => {
+                modalLoader.style.display = 'none';
+                modalTimer.style.display = 'block';
+                modalText.textContent = 'Ad watched! Complete verification...';
+                
+                // Timer
+                let timeLeft = 5;
+                modalTimer.textContent = `⏳ ${timeLeft}s`;
+                
+                const interval = setInterval(() => {
+                    timeLeft--;
+                    modalTimer.textContent = `⏳ ${timeLeft}s`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(interval);
+                        completeAdWatch(adNumber);
+                    }
+                }, 1000);
+            }, 2000);
+        }
+
+        // Complete ad watch
+        function completeAdWatch(adNumber) {
+            // Update local count
+            adsWatched = Math.max(adsWatched, adNumber);
+            
+            // Save to localStorage
+            if (userId) {
+                localStorage.setItem(`ads_${userId}`, JSON.stringify({
+                    adsWatched: adsWatched,
+                    canUnlock: adsWatched >= 5
+                }));
+            }
+            
+            // Send to bot
+            tg.sendData(JSON.stringify({
+                action: "record_ad_watch",
+                user_id: userId
+            }));
+            
+            // Update UI
+            updateAdUI();
+            
+            // Close modal
+            closeModal();
+            
+            // Show success message
+            if (adsWatched >= 5) {
+                setTimeout(() => {
+                    alert('✅ Congratulations! You can now unlock ONE episode from Home tab!');
+                    switchTab('home');
+                }, 500);
+            }
+        }
+
+        // Switch between tabs
+        function switchTab(tab) {
+            const homeTab = document.getElementById('homeTab');
+            const taskTab = document.getElementById('taskTab');
+            const navHome = document.getElementById('navHome');
+            const navTask = document.getElementById('navTask');
+            
+            if (tab === 'home') {
+                homeTab.style.display = 'block';
+                taskTab.style.display = 'none';
+                navHome.classList.add('active');
+                navTask.classList.remove('active');
+            } else {
+                homeTab.style.display = 'none';
+                taskTab.style.display = 'block';
+                navHome.classList.remove('active');
+                navTask.classList.add('active');
+            }
+        }
+
+        // Generate episodes
         function generateEpisodes() {
             const grid = document.getElementById('episodeGrid');
-            const startEp = 104;
-            const endEp = 135;
-            
-            grid.innerHTML = '';
-            
-            for (let i = startEp; i <= endEp; i++) {
+            for (let i = 104; i <= 135; i++) {
                 const card = document.createElement('div');
-                card.className = 'episode-card';
-                card.setAttribute('data-episode', i);
-                card.onclick = () => openModal(i);
-                
+                card.className = 'episode-card locked';
+                card.onclick = () => selectEpisode(i);
                 card.innerHTML = `
                     <div class="episode-number">${i}</div>
                     <div class="episode-label">EPISODE</div>
+                    <div class="lock-icon">🔒</div>
                 `;
-                
                 grid.appendChild(card);
             }
+        }
+
+        // Select episode
+        function selectEpisode(episode) {
+            if (!canUnlock) {
+                alert('❌ Please watch 5 ads first to unlock an episode!');
+                switchTab('task');
+                return;
+            }
             
-            // Update episode count
-            document.getElementById('episodeCount').textContent = endEp - startEp + 1;
+            selectedEpisode = episode;
+            showUnlockModal(episode);
+        }
+
+        // Show unlock modal
+        function showUnlockModal(episode) {
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalText = document.getElementById('modalText');
+            const modalTimer = document.getElementById('modalTimer');
+            const modalLoader = document.getElementById('modalLoader');
+            const modalBtn = document.getElementById('modalActionBtn');
+            
+            modal.style.display = 'flex';
+            modalTitle.textContent = 'Unlock Episode';
+            modalText.textContent = `You can unlock Episode ${episode} now.`;
+            modalLoader.style.display = 'none';
+            modalTimer.style.display = 'none';
+            modalBtn.style.display = 'block';
+            modalBtn.textContent = 'Get Video';
+            
+            modalBtn.onclick = () => {
+                // Send to bot
+                tg.sendData(JSON.stringify({
+                    action: "get_video",
+                    ep_id: episode.toString()
+                }));
+                
+                // Reset ad cycle locally
+                adsWatched = 0;
+                canUnlock = false;
+                localStorage.setItem(`ads_${userId}`, JSON.stringify({
+                    adsWatched: 0,
+                    canUnlock: false
+                }));
+                
+                // Send reset to bot
+                tg.sendData(JSON.stringify({
+                    action: "reset_cycle"
+                }));
+                
+                updateAdUI();
+                closeModal();
+                
+                // Show success
+                setTimeout(() => {
+                    alert('✅ Video sent to Telegram! Check your chat.');
+                }, 1000);
+            };
         }
 
         // Filter episodes
         function filterEpisodes() {
-            const searchValue = document.getElementById('searchInput').value;
+            const search = document.getElementById('searchInput').value;
             const cards = document.querySelectorAll('.episode-card');
-            let visibleCount = 0;
             
             cards.forEach(card => {
-                const epNumber = card.getAttribute('data-episode');
-                if (epNumber.includes(searchValue)) {
+                const number = card.querySelector('.episode-number').textContent;
+                if (number.includes(search)) {
                     card.style.display = 'block';
-                    visibleCount++;
                 } else {
                     card.style.display = 'none';
                 }
             });
-            
-            document.getElementById('episodeCount').textContent = visibleCount;
         }
 
-        // Modal functions
-        function openModal(episode) {
-            currentEpisode = episode;
-            currentStep = 1;
-            
-            document.getElementById('modal').style.display = 'flex';
-            document.getElementById('modalEpisode').textContent = `Episode ${episode}`;
-            
-            updateStepUI(1);
-            showStep1();
-        }
-
+        // Close modal
         function closeModal() {
             document.getElementById('modal').style.display = 'none';
-            resetModal();
-        }
-
-        function resetModal() {
-            document.getElementById('loader').style.display = 'none';
-            document.getElementById('timer').style.display = 'none';
-            document.getElementById('timer').innerHTML = '';
-            document.getElementById('actionBtn').style.display = 'block';
-        }
-
-        function updateStepUI(step) {
-            for (let i = 1; i <= 3; i++) {
-                const stepEl = document.getElementById(`step${i}`);
-                if (i <= step) {
-                    stepEl.classList.add('active');
-                } else {
-                    stepEl.classList.remove('active');
-                }
-            }
-        }
-
-        function showStep1() {
-            const actionBtn = document.getElementById('actionBtn');
-            const statusMsg = document.getElementById('statusMessage');
-            
-            actionBtn.style.display = 'block';
-            actionBtn.textContent = 'Watch Ad 1/3';
-            statusMsg.innerHTML = 'Watch first ad to continue';
-            
-            actionBtn.onclick = () => {
-                window.open(AD_LINK_1, '_blank');
-                showLoader('Preparing next step...');
-                startTimer(5, showStep2);
-            };
-        }
-
-        function showStep2() {
-            currentStep = 2;
-            updateStepUI(2);
-            
-            const actionBtn = document.getElementById('actionBtn');
-            const statusMsg = document.getElementById('statusMessage');
-            
-            actionBtn.style.display = 'block';
-            actionBtn.textContent = 'Verify Now';
-            statusMsg.innerHTML = 'Complete quick verification';
-            
-            actionBtn.onclick = () => {
-                showLoader('Verifying...');
-                startTimer(3, showStep3);
-            };
-        }
-
-        function showStep3() {
-            currentStep = 3;
-            updateStepUI(3);
-            
-            const actionBtn = document.getElementById('actionBtn');
-            const statusMsg = document.getElementById('statusMessage');
-            
-            actionBtn.style.display = 'block';
-            actionBtn.textContent = 'Watch Final Ad';
-            statusMsg.innerHTML = 'One last step to unlock';
-            
-            actionBtn.onclick = () => {
-                window.open(AD_LINK_2, '_blank');
-                showLoader('Finalizing...');
-                startTimer(3, finalStep);
-            };
-        }
-
-        function finalStep() {
-            const actionBtn = document.getElementById('actionBtn');
-            const statusMsg = document.getElementById('statusMessage');
-            
-            document.getElementById('loader').style.display = 'none';
-            actionBtn.style.display = 'block';
-            actionBtn.textContent = 'GET VIDEO';
-            statusMsg.innerHTML = '✅ Ready to watch!';
-            
-            actionBtn.onclick = () => {
-                tg.sendData(JSON.stringify({ 
-                    action: "get_video", 
-                    ep_id: currentEpisode.toString() 
-                }));
-                tg.close();
-            };
-        }
-
-        function showLoader(message) {
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('actionBtn').style.display = 'none';
-            document.getElementById('statusMessage').innerHTML = message;
-        }
-
-        function startTimer(seconds, callback) {
-            let timeLeft = seconds;
-            const timerDisplay = document.getElementById('timer');
-            
-            timerDisplay.style.display = 'block';
-            timerDisplay.innerHTML = `⏳ ${timeLeft}s`;
-            
-            const interval = setInterval(() => {
-                timeLeft--;
-                timerDisplay.innerHTML = `⏳ ${timeLeft}s`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(interval);
-                    timerDisplay.style.display = 'none';
-                    document.getElementById('loader').style.display = 'none';
-                    callback();
-                }
-            }, 1000);
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             generateEpisodes();
             showProfile();
+            loadAdStatus();
             
-            // Hide any ad scripts if they cause lag
-            try {
-                // Optional: disable heavy animations if needed
-            } catch(e) {}
+            // Add search listener
+            document.getElementById('searchInput').addEventListener('keyup', filterEpisodes);
+            
+            // Auto-refresh status every 5 seconds
+            setInterval(loadAdStatus, 5000);
         });
     </script>
 </body>
